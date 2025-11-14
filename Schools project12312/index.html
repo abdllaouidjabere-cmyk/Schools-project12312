@@ -339,29 +339,6 @@
             border-bottom: 2px solid #eee;
         }
         
-        .recommendations {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .recommendation-item {
-            background: #f9f9f9;
-            border-radius: 5px;
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #eee;
-            font-weight: 500;
-        }
-        
-        .recommendation-item:hover {
-            background: #f0f0f0;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
         .stats-container {
             display: flex;
             flex-wrap: wrap;
@@ -499,7 +476,7 @@
                 justify-content: center;
             }
             
-            .recommendations, .stats-container, .actions-container {
+            .stats-container, .actions-container {
                 flex-direction: column;
             }
             
@@ -619,20 +596,16 @@
             </div>
             
             <div class="dashboard-content">
-                <h2 class="section-title">التوصية</h2>
-                <div class="recommendations">
-                    <div class="recommendation-item">الرئيسية</div>
-                    <div class="recommendation-item">الطالب</div>
-                    <div class="recommendation-item">أولياء الأمور</div>
-                    <div class="recommendation-item">الكاشير</div>
-                    <div class="recommendation-item">المستخدمين</div>
-                </div>
-                
                 <div class="stats-container">
                     <div class="stat-card">
                         <div class="stat-title">إجمالي أجهزة الكاشير</div>
                         <div class="stat-value"><span id="cashierCount">0</span> كاشير</div>
                         <div class="stat-limit">الحد الأقصى: 30 جهاز</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">إجمالي الطلاب</div>
+                        <div class="stat-value"><span id="studentCount">0</span> طالب</div>
+                        <div class="stat-limit">الحد الأقصى: 5000 طالب</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-title">إجمالي أولياء الأمور</div>
@@ -715,6 +688,7 @@
         const addCashierBtn = document.getElementById('addCashierBtn');
         const addStudentBtn = document.getElementById('addStudentBtn');
         const cashierCount = document.getElementById('cashierCount');
+        const studentCount = document.getElementById('studentCount');
         const parentCount = document.getElementById('parentCount');
         const studentsTableBody = document.getElementById('studentsTableBody');
         
@@ -793,6 +767,7 @@
         // تحديث الواجهة الرئيسية
         function updateDashboard() {
             cashierCount.textContent = appData.cashiers;
+            studentCount.textContent = appData.students;
             parentCount.textContent = appData.parents;
             
             // تحديث جدول الطلاب
@@ -963,8 +938,8 @@
         });
         
         addStudentBtn.addEventListener('click', function() {
-            if (appData.parents >= 2000) {
-                alert('لا يمكن إضافة المزيد من أولياء الأمور. الحد الأقصى هو 2000 ولي أمر.');
+            if (appData.students >= 5000) {
+                alert('لا يمكن إضافة المزيد من الطلاب. الحد الأقصى هو 5000 طالب.');
                 return;
             }
             
