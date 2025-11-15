@@ -6,6 +6,7 @@
     <title>النافذة الذكية - SmartWallet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ===== RESET & GLOBAL STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -25,7 +26,7 @@
             align-items: center;
         }
         
-        /* تنسيقات واجهة تسجيل الدخول */
+        /* ===== LOGIN FORM STYLES ===== */
         .form-container {
             background-color: white;
             border-radius: 8px;
@@ -93,14 +94,6 @@
             outline: none;
             border-color: #556B2F;
             box-shadow: 0 0 0 2px rgba(85, 107, 47, 0.2);
-        }
-        
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 40px;
-            color: #777;
-            font-size: 18px;
         }
         
         .password-input {
@@ -278,7 +271,7 @@
             display: none;
         }
         
-        /* الشريط العلوي الجديد */
+        /* ===== TOP NAVBAR STYLES ===== */
         .top-navbar {
             background: white;
             border-radius: 8px 8px 0 0;
@@ -335,7 +328,7 @@
             font-size: 18px;
         }
         
-        /* تنسيقات الواجهة الرئيسية المطابقة للتصميم */
+        /* ===== DASHBOARD STYLES ===== */
         .dashboard {
             width: 100%;
             max-width: 1200px;
@@ -503,7 +496,22 @@
             margin-top: 20px;
         }
         
-        /* نافذة إضافة طالب جديدة */
+        .user-action-btn {
+            background: #556B2F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .user-action-btn:hover {
+            background: #475823;
+        }
+        
+        /* ===== MODAL STYLES ===== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -511,7 +519,7 @@
             bottom: 0;
             left: 0;
             background: rgba(0, 0, 0, 0.5);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
@@ -587,7 +595,7 @@
             margin-right: 5px;
         }
         
-        /* تنسيقات قسم الطلاب */
+        /* ===== STUDENTS SECTION STYLES ===== */
         .students-section {
             margin-top: 30px;
         }
@@ -614,6 +622,7 @@
             background: #475823;
         }
         
+        /* ===== RESPONSIVE STYLES ===== */
         @media (max-width: 992px) {
             .top-navbar {
                 flex-direction: column;
@@ -705,7 +714,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- واجهة تسجيل الدخول -->
+        <!-- Login Form -->
         <div class="form-container" id="loginFormContainer">
             <div class="header">
                 <h1 class="main-title">مرحباً بك</h1>
@@ -743,7 +752,7 @@
             </form>
         </div>
         
-        <!-- واجهة تغيير كلمة المرور -->
+        <!-- Change Password Form -->
         <div class="form-container hidden" id="changePasswordContainer">
             <div class="header">
                 <h1 class="main-title">تغيير كلمة المرور</h1>
@@ -791,7 +800,7 @@
             </form>
         </div>
         
-        <!-- الشريط العلوي الجديد -->
+        <!-- Top Navigation Bar -->
         <div class="top-navbar hidden" id="topNavbar">
             <div class="nav-logo">
                 <div class="logo-text">النافذة الذكية</div>
@@ -821,7 +830,7 @@
             </div>
         </div>
         
-        <!-- الواجهة الرئيسية المطابقة للتصميم -->
+        <!-- Dashboard -->
         <div class="dashboard hidden" id="dashboardContainer">
             <div class="dashboard-header">
                 <div>
@@ -849,22 +858,11 @@
                     </div>
                 </div>
                 
-                <div class="actions-container">
-                    <div class="action-card">
-                        <div class="action-title">إضافة كاشير جديد</div>
-                        <button class="action-btn" id="addCashierBtn">إضافة</button>
-                    </div>
-                    <div class="action-card">
-                        <div class="action-title">إضافة طالب جديد</div>
-                        <button class="action-btn" id="addStudentBtn">إضافة</button>
-                    </div>
-                </div>
-                
-                <!-- قسم الطلاب -->
+                <!-- Students Section -->
                 <div class="students-section">
                     <div class="students-header">
                         <h2 class="section-title">الطلاب</h2>
-                        <button class="add-student-btn" id="addStudentBtn2">إضافة طالب جديد</button>
+                        <button class="add-student-btn" id="addStudentBtn">إضافة طالب جديد</button>
                     </div>
                     <div class="table-container">
                         <table class="data-table">
@@ -895,8 +893,8 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة طالب جديدة -->
-    <div class="modal-overlay hidden" id="addStudentModal">
+    <!-- Add Student Modal -->
+    <div class="modal-overlay" id="addStudentModal">
         <div class="modal-container">
             <div class="modal-header">
                 <h2 class="modal-title">إضافة طالب جديد</h2>
@@ -994,7 +992,8 @@
     </div>
 
     <script>
-        // عناصر DOM لواجهة تسجيل الدخول
+        // ===== DOM ELEMENTS =====
+        // Login Form Elements
         const loginForm = document.getElementById('loginForm');
         const phoneInput = document.getElementById('phone');
         const passwordInput = document.getElementById('password');
@@ -1003,7 +1002,7 @@
         const contactSupport = document.getElementById('contactSupport');
         const loginMessageDiv = document.getElementById('loginMessage');
         
-        // عناصر DOM لواجهة تغيير كلمة المرور
+        // Change Password Form Elements
         const changePasswordForm = document.getElementById('changePasswordForm');
         const oldPasswordInput = document.getElementById('oldPassword');
         const newPasswordInput = document.getElementById('newPassword');
@@ -1016,36 +1015,34 @@
         const passwordStrength = document.getElementById('passwordStrength');
         const backToLoginLink = document.getElementById('backToLoginLink');
         
-        // عناصر الحاويات
+        // Container Elements
         const loginFormContainer = document.getElementById('loginFormContainer');
         const changePasswordContainer = document.getElementById('changePasswordContainer');
         const dashboardContainer = document.getElementById('dashboardContainer');
         const topNavbar = document.getElementById('topNavbar');
         
-        // عناصر الشريط العلوي
+        // Navigation Elements
         const navHome = document.getElementById('navHome');
         const navStudents = document.getElementById('navStudents');
         const navParents = document.getElementById('navParents');
         const navCashier = document.getElementById('navCashier');
         const navUsers = document.getElementById('navUsers');
         
-        // عناصر الواجهة الرئيسية
+        // Dashboard Elements
         const changePasswordBtn = document.getElementById('changePasswordBtn');
         const logoutBtn = document.getElementById('logoutBtn');
-        const addCashierBtn = document.getElementById('addCashierBtn');
         const addStudentBtn = document.getElementById('addStudentBtn');
-        const addStudentBtn2 = document.getElementById('addStudentBtn2');
         const cashierCount = document.getElementById('cashierCount');
         const studentCount = document.getElementById('studentCount');
         const parentCount = document.getElementById('parentCount');
         const studentsTableBody = document.getElementById('studentsTableBody');
         
-        // عناصر نافذة إضافة طالب
+        // Add Student Modal Elements
         const addStudentModal = document.getElementById('addStudentModal');
         const closeStudentModal = document.getElementById('closeStudentModal');
         const addStudentForm = document.getElementById('addStudentForm');
         
-        // بيانات التطبيق
+        // ===== APPLICATION DATA =====
         let appData = {
             cashiers: 0,
             parents: 0,
@@ -1054,7 +1051,13 @@
             currentSection: 'home'
         };
         
-        // وظائف عامة
+        // ===== UTILITY FUNCTIONS =====
+        /**
+         * Displays a message in the specified message container
+         * @param {HTMLElement} messageDiv - The message container element
+         * @param {string} text - The message text
+         * @param {string} type - The message type ('success' or 'error')
+         */
         function showMessage(messageDiv, text, type) {
             messageDiv.textContent = text;
             messageDiv.className = `message ${type}`;
@@ -1065,6 +1068,11 @@
             }, 5000);
         }
         
+        /**
+         * Sets up password visibility toggle for a password input
+         * @param {HTMLElement} toggleElement - The toggle icon element
+         * @param {HTMLInputElement} passwordInput - The password input element
+         */
         function setupPasswordToggle(toggleElement, passwordInput) {
             toggleElement.addEventListener('click', function() {
                 if (passwordInput.type === 'password') {
@@ -1079,13 +1087,21 @@
             });
         }
         
-        // التحقق من صحة رقم الجوال
+        /**
+         * Validates a phone number (Saudi format)
+         * @param {string} phone - The phone number to validate
+         * @returns {boolean} - True if the phone number is valid
+         */
         function validatePhone(phone) {
             const phoneRegex = /^05\d{8}$/;
             return phoneRegex.test(phone);
         }
         
-        // التحقق من قوة كلمة المرور
+        /**
+         * Checks the strength of a password
+         * @param {string} password - The password to check
+         * @returns {number} - The password strength score (0-5)
+         */
         function checkPasswordStrength(password) {
             let strength = 0;
             
@@ -1098,7 +1114,10 @@
             return strength;
         }
         
-        // التبديل بين الواجهات
+        // ===== VIEW MANAGEMENT FUNCTIONS =====
+        /**
+         * Shows the login form and hides other views
+         */
         function showLoginForm() {
             changePasswordContainer.classList.add('hidden');
             dashboardContainer.classList.add('hidden');
@@ -1106,6 +1125,9 @@
             loginFormContainer.classList.remove('hidden');
         }
         
+        /**
+         * Shows the change password form and hides other views
+         */
         function showChangePasswordForm() {
             loginFormContainer.classList.add('hidden');
             dashboardContainer.classList.add('hidden');
@@ -1113,6 +1135,9 @@
             changePasswordContainer.classList.remove('hidden');
         }
         
+        /**
+         * Shows the dashboard and hides other views
+         */
         function showDashboard() {
             loginFormContainer.classList.add('hidden');
             changePasswordContainer.classList.add('hidden');
@@ -1121,13 +1146,15 @@
             updateDashboard();
         }
         
-        // تحديث الواجهة الرئيسية
+        /**
+         * Updates the dashboard with current data
+         */
         function updateDashboard() {
             cashierCount.textContent = appData.cashiers;
             studentCount.textContent = appData.students;
             parentCount.textContent = appData.parents;
             
-            // تحديث جدول الطلاب
+            // Update students table
             if (appData.studentsList.length > 0) {
                 let tableHTML = '';
                 appData.studentsList.forEach(student => {
@@ -1152,14 +1179,16 @@
             }
         }
         
-        // تحديث القسم النشط في الشريط العلوي
+        /**
+         * Updates the active navigation item
+         */
         function updateActiveNavItem() {
-            // إزالة الفئة النشطة من جميع العناصر
+            // Remove active class from all items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
             
-            // إضافة الفئة النشطة للعنصر المحدد
+            // Add active class to the selected item
             switch(appData.currentSection) {
                 case 'home':
                     navHome.classList.add('active');
@@ -1179,13 +1208,29 @@
             }
         }
         
-        // إعداد أزرار إظهار/إخفاء كلمة المرور
+        /**
+         * Shows the add student modal
+         */
+        function showAddStudentModal() {
+            addStudentModal.style.display = 'flex';
+        }
+        
+        /**
+         * Hides the add student modal
+         */
+        function hideAddStudentModal() {
+            addStudentModal.style.display = 'none';
+            addStudentForm.reset();
+        }
+        
+        // ===== INITIALIZATION =====
+        // Set up password toggle buttons
         setupPasswordToggle(togglePassword, passwordInput);
         setupPasswordToggle(toggleOldPassword, oldPasswordInput);
         setupPasswordToggle(toggleNewPassword, newPasswordInput);
         setupPasswordToggle(toggleConfirmPassword, confirmPasswordInput);
         
-        // تحديث مؤشر قوة كلمة المرور
+        // Update password strength indicator
         newPasswordInput.addEventListener('input', function() {
             const strength = checkPasswordStrength(this.value);
             const strengthBar = passwordStrength;
@@ -1203,7 +1248,8 @@
             }
         });
         
-        // معالجة تسجيل الدخول
+        // ===== EVENT HANDLERS =====
+        // Login form submission
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1227,13 +1273,14 @@
             
             showMessage(loginMessageDiv, 'جاري تسجيل الدخول...', 'success');
             
+            // Simulate login process
             setTimeout(() => {
                 showMessage(loginMessageDiv, 'مرحباً بك! تم تسجيل الدخول بنجاح', 'success');
                 showDashboard();
             }, 1500);
         });
         
-        // معالجة تغيير كلمة المرور
+        // Change password form submission
         changePasswordForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1263,6 +1310,7 @@
             
             showMessage(changePasswordMessageDiv, 'جاري تغيير كلمة المرور...', 'success');
             
+            // Simulate password change process
             setTimeout(() => {
                 showMessage(changePasswordMessageDiv, 'تم تغيير كلمة المرور بنجاح', 'success');
                 changePasswordForm.reset();
@@ -1272,12 +1320,12 @@
             }, 1500);
         });
         
-        // معالجة نسيان كلمة السر
+        // Forgot password link
         forgotPasswordLink.addEventListener('click', function() {
             showChangePasswordForm();
         });
         
-        // معالجة زر الإلغاء
+        // Cancel button
         cancelButton.addEventListener('click', function() {
             if (confirm('هل تريد إلغاء عملية تغيير كلمة المرور؟')) {
                 changePasswordForm.reset();
@@ -1287,18 +1335,18 @@
             }
         });
         
-        // العودة إلى تسجيل الدخول
+        // Back to login link
         backToLoginLink.addEventListener('click', function() {
             showLoginForm();
         });
         
-        // معالجة التواصل مع الدعم
+        // Contact support
         contactSupport.addEventListener('click', function(e) {
             e.preventDefault();
             showMessage(loginMessageDiv, 'يرجى التواصل مع الدعم الفني على الرقم: 8001234567', 'success');
         });
         
-        // معالجة الأزرار في الواجهة الرئيسية
+        // Dashboard buttons
         changePasswordBtn.addEventListener('click', function() {
             showChangePasswordForm();
         });
@@ -1310,27 +1358,11 @@
             }
         });
         
-        addCashierBtn.addEventListener('click', function() {
-            if (appData.cashiers >= 30) {
-                alert('لا يمكن إضافة المزيد من أجهزة الكاشير. الحد الأقصى هو 30 جهاز.');
-                return;
-            }
-            
-            appData.cashiers++;
-            updateDashboard();
-            alert('تم إضافة جهاز كاشير جديد بنجاح!');
-        });
-        
-        // معالجة أزرار إضافة طالب جديد
         addStudentBtn.addEventListener('click', function() {
-            addStudentModal.classList.remove('hidden');
+            showAddStudentModal();
         });
         
-        addStudentBtn2.addEventListener('click', function() {
-            addStudentModal.classList.remove('hidden');
-        });
-        
-        // معالجة النقر على عناصر الشريط العلوي
+        // Navigation items
         navHome.addEventListener('click', function() {
             appData.currentSection = 'home';
             updateActiveNavItem();
@@ -1356,25 +1388,23 @@
             updateActiveNavItem();
         });
         
-        // معالجة نافذة إضافة طالب
+        // Add student modal
         closeStudentModal.addEventListener('click', function() {
-            addStudentModal.classList.add('hidden');
-            addStudentForm.reset();
+            hideAddStudentModal();
         });
         
-        // إغلاق النافذة عند النقر خارجها
+        // Close modal when clicking outside
         addStudentModal.addEventListener('click', function(e) {
             if (e.target === addStudentModal) {
-                addStudentModal.classList.add('hidden');
-                addStudentForm.reset();
+                hideAddStudentModal();
             }
         });
         
-        // معالجة إضافة طالب جديد
+        // Add student form submission
         addStudentForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // جمع البيانات من النموذج
+            // Collect form data
             const studentFirstName = document.getElementById('studentFirstName').value;
             const studentSecondName = document.getElementById('studentSecondName').value;
             const studentLastName = document.getElementById('studentLastName').value;
@@ -1387,7 +1417,7 @@
             const studentLevel = document.getElementById('studentLevel').value;
             const studentGrade = document.getElementById('studentGrade').value;
             
-            // التحقق من صحة البيانات
+            // Validate data
             if (!studentFirstName || !studentLastName || !parentPhone || !parentFirstName || 
                 !parentLastName || !studentLevel || !studentGrade) {
                 alert('يرجى ملء جميع الحقول المطلوبة (المحددة بعلامة *)');
@@ -1404,11 +1434,11 @@
                 return;
             }
             
-            // إنشاء اسم الطالب وولي الأمر
+            // Create student and parent names
             const studentName = `${studentFirstName} ${studentSecondName ? studentSecondName + ' ' : ''}${studentLastName}`;
             const parentName = `${parentFirstName} ${parentFatherName ? parentFatherName + ' ' : ''}${parentGrandName ? parentGrandName + ' ' : ''}${parentLastName}`;
             
-            // إضافة الطالب الجديد
+            // Add new student
             const newStudent = {
                 name: studentName,
                 level: studentLevel,
@@ -1422,9 +1452,8 @@
             appData.parents++;
             appData.studentsList.push(newStudent);
             
-            // إغلاق النافذة وتحديث البيانات
-            addStudentModal.classList.add('hidden');
-            addStudentForm.reset();
+            // Close modal and update data
+            hideAddStudentModal();
             updateDashboard();
             alert('تم إضافة الطالب الجديد بنجاح!');
         });
