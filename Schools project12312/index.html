@@ -587,6 +587,33 @@
             margin-right: 5px;
         }
         
+        /* تنسيقات قسم الطلاب */
+        .students-section {
+            margin-top: 30px;
+        }
+        
+        .students-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .add-student-btn {
+            background: #556B2F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .add-student-btn:hover {
+            background: #475823;
+        }
+        
         @media (max-width: 992px) {
             .top-navbar {
                 flex-direction: column;
@@ -646,6 +673,12 @@
             
             .modal-container {
                 max-height: 95vh;
+            }
+            
+            .students-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
             }
         }
         
@@ -827,26 +860,31 @@
                     </div>
                 </div>
                 
-                <!-- قسم الطلاب المضافين -->
-                <h2 class="section-title">الطلاب المضافين</h2>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>اسم الطالب</th>
-                                <th>المرحلة الدراسية</th>
-                                <th>ولي الأمر</th>
-                                <th>الصف</th>
-                                <th>الرصيد</th>
-                                <th>رقم هاتف ولي الأمر</th>
-                            </tr>
-                        </thead>
-                        <tbody id="studentsTableBody">
-                            <tr>
-                                <td colspan="6" class="empty-table">لا توجد بيانات للعرض. قم بإضافة طلاب أولاً.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- قسم الطلاب -->
+                <div class="students-section">
+                    <div class="students-header">
+                        <h2 class="section-title">الطلاب</h2>
+                        <button class="add-student-btn" id="addStudentBtn2">إضافة طالب جديد</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم الطالب</th>
+                                    <th>المرحلة الدراسية</th>
+                                    <th>ولي الأمر</th>
+                                    <th>الصف</th>
+                                    <th>الرصيد</th>
+                                    <th>رقم هاتف ولي الأمر</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <tr>
+                                    <td colspan="6" class="empty-table">لا توجد بيانات للعرض. قم بإضافة طلاب أولاً.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
                 <div class="footer-actions">
@@ -996,6 +1034,7 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const addCashierBtn = document.getElementById('addCashierBtn');
         const addStudentBtn = document.getElementById('addStudentBtn');
+        const addStudentBtn2 = document.getElementById('addStudentBtn2');
         const cashierCount = document.getElementById('cashierCount');
         const studentCount = document.getElementById('studentCount');
         const parentCount = document.getElementById('parentCount');
@@ -1282,7 +1321,12 @@
             alert('تم إضافة جهاز كاشير جديد بنجاح!');
         });
         
+        // معالجة أزرار إضافة طالب جديد
         addStudentBtn.addEventListener('click', function() {
+            addStudentModal.classList.remove('hidden');
+        });
+        
+        addStudentBtn2.addEventListener('click', function() {
             addStudentModal.classList.remove('hidden');
         });
         
@@ -1290,31 +1334,26 @@
         navHome.addEventListener('click', function() {
             appData.currentSection = 'home';
             updateActiveNavItem();
-            alert('تم الانتقال إلى القسم الرئيسي');
         });
         
         navStudents.addEventListener('click', function() {
             appData.currentSection = 'students';
             updateActiveNavItem();
-            alert('تم الانتقال إلى قسم الطلاب');
         });
         
         navParents.addEventListener('click', function() {
             appData.currentSection = 'parents';
             updateActiveNavItem();
-            alert('تم الانتقال إلى قسم أولياء الأمور');
         });
         
         navCashier.addEventListener('click', function() {
             appData.currentSection = 'cashier';
             updateActiveNavItem();
-            alert('تم الانتقال إلى قسم الكاشير');
         });
         
         navUsers.addEventListener('click', function() {
             appData.currentSection = 'users';
             updateActiveNavItem();
-            alert('تم الانتقال إلى قسم المستخدمين');
         });
         
         // معالجة نافذة إضافة طالب
