@@ -82,7 +82,7 @@
         
         .form-input {
             width: 100%;
-            padding: 12px 45px 12px 15px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
@@ -140,7 +140,7 @@
             text-decoration: underline;
         }
         
-        .login-button, .change-button {
+        .login-button, .change-button, .add-button {
             background: linear-gradient(to left, #556B2F, #6B8E23);
             color: white;
             border: none;
@@ -154,13 +154,13 @@
             box-shadow: 0 4px 10px rgba(85, 107, 47, 0.3);
         }
         
-        .login-button:hover, .change-button:hover {
+        .login-button:hover, .change-button:hover, .add-button:hover {
             background: linear-gradient(to left, #475823, #556B2F);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(85, 107, 47, 0.4);
         }
         
-        .login-button:active, .change-button:active {
+        .login-button:active, .change-button:active, .add-button:active {
             transform: translateY(0);
         }
         
@@ -288,6 +288,8 @@
             align-items: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             border-bottom: 1px solid #ddd;
+            width: 100%;
+            max-width: 1200px;
         }
         
         .nav-logo {
@@ -331,24 +333,6 @@
         
         .nav-icon {
             font-size: 18px;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #556B2F;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
         }
         
         /* تنسيقات الواجهة الرئيسية المطابقة للتصميم */
@@ -519,6 +503,90 @@
             margin-top: 20px;
         }
         
+        /* نافذة إضافة طالب جديدة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal-container {
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            background: linear-gradient(to right, #556B2F, #6B8E23);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-header {
+            font-size: 20px;
+            color: #556B2F;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-field {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .required::after {
+            content: "*";
+            color: red;
+            margin-right: 5px;
+        }
+        
         @media (max-width: 992px) {
             .top-navbar {
                 flex-direction: column;
@@ -538,11 +606,6 @@
                 padding: 8px 10px;
                 font-size: 14px;
             }
-            
-            .user-info {
-                width: 100%;
-                justify-content: center;
-            }
         }
         
         @media (max-width: 768px) {
@@ -550,11 +613,6 @@
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
-            }
-            
-            .user-actions {
-                width: 100%;
-                justify-content: center;
             }
             
             .stats-container, .actions-container {
@@ -585,6 +643,10 @@
             .nav-item {
                 min-width: 100px;
             }
+            
+            .modal-container {
+                max-height: 95vh;
+            }
         }
         
         @media (max-width: 480px) {
@@ -596,6 +658,14 @@
             
             .nav-icon {
                 font-size: 16px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-field {
+                min-width: 100%;
             }
         }
     </style>
@@ -716,14 +786,6 @@
                     <span>المستخدمين</span>
                 </div>
             </div>
-            
-            <div class="user-info">
-                <div class="user-avatar">م</div>
-                <div>
-                    <div style="font-weight: bold;">مدير النظام</div>
-                    <div style="font-size: 12px; color: #666;">admin@smartwallet.com</div>
-                </div>
-            </div>
         </div>
         
         <!-- الواجهة الرئيسية المطابقة للتصميم -->
@@ -765,7 +827,8 @@
                     </div>
                 </div>
                 
-                <h2 class="section-title">عرض الكل</h2>
+                <!-- قسم الطلاب المضافين -->
+                <h2 class="section-title">الطلاب المضافين</h2>
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -790,6 +853,104 @@
                     <button class="user-action-btn" id="changePasswordBtn">تغيير كلمة السر</button>
                     <button class="user-action-btn" id="logoutBtn">تسجيل خروج</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة طالب جديدة -->
+    <div class="modal-overlay hidden" id="addStudentModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">إضافة طالب جديد</h2>
+                <button class="close-modal" id="closeStudentModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addStudentForm">
+                    <div class="form-section">
+                        <h3 class="section-header">البيانات الأساسية</h3>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label class="form-label required">الاسم الأول</label>
+                                <input type="text" class="form-input" id="studentFirstName" placeholder="د." required>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">الاسم الثاني</label>
+                                <input type="text" class="form-input" id="studentSecondName" placeholder="علي">
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label required">الاسم الأخير</label>
+                                <input type="text" class="form-input" id="studentLastName" placeholder="التاريخ" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label class="form-label">تاريخ الميلاد</label>
+                                <input type="date" class="form-input" id="studentBirthDate">
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label required">رقم جوال ولي الأمر</label>
+                                <input type="tel" class="form-input" id="parentPhone" placeholder="05555555555" required>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label required">كلمة السر</label>
+                                <input type="password" class="form-input" id="studentPassword" placeholder="كلمة السر" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="section-header">بيانات ولي الأمر</h3>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label class="form-label required">الاسم الأول</label>
+                                <input type="text" class="form-input" id="parentFirstName" placeholder="د." required>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">الاسم الأب</label>
+                                <input type="text" class="form-input" id="parentFatherName" placeholder="علي">
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">الاسم الجد</label>
+                                <input type="text" class="form-input" id="parentGrandName" placeholder="علي">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label class="form-label required">الاسم الأخير</label>
+                                <input type="text" class="form-input" id="parentLastName" placeholder="التاريخ" required>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">تاريخ الميلاد</label>
+                                <input type="date" class="form-input" id="parentBirthDate">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label class="form-label required">المرحلة الدراسية</label>
+                                <select class="form-input" id="studentLevel" required>
+                                    <option value="">اختر المرحلة</option>
+                                    <option value="ابتدائي">ابتدائي</option>
+                                    <option value="متوسط">متوسط</option>
+                                    <option value="ثانوي">ثانوي</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label required">الصف</label>
+                                <select class="form-input" id="studentGrade" required>
+                                    <option value="">اختر الصف</option>
+                                    <option value="الأول">الأول</option>
+                                    <option value="الثاني">الثاني</option>
+                                    <option value="الثالث">الثالث</option>
+                                    <option value="الرابع">الرابع</option>
+                                    <option value="الخامس">الخامس</option>
+                                    <option value="السادس">السادس</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="add-button">إضافة</button>
+                </form>
             </div>
         </div>
     </div>
@@ -839,6 +1000,11 @@
         const studentCount = document.getElementById('studentCount');
         const parentCount = document.getElementById('parentCount');
         const studentsTableBody = document.getElementById('studentsTableBody');
+        
+        // عناصر نافذة إضافة طالب
+        const addStudentModal = document.getElementById('addStudentModal');
+        const closeStudentModal = document.getElementById('closeStudentModal');
+        const addStudentForm = document.getElementById('addStudentForm');
         
         // بيانات التطبيق
         let appData = {
@@ -1117,26 +1283,7 @@
         });
         
         addStudentBtn.addEventListener('click', function() {
-            if (appData.students >= 5000) {
-                alert('لا يمكن إضافة المزيد من الطلاب. الحد الأقصى هو 5000 طالب.');
-                return;
-            }
-            
-            // إضافة طالب جديد (بيانات وهمية للعرض)
-            const newStudent = {
-                name: `طالب ${appData.students + 1}`,
-                level: "الإبتدائي",
-                parent: `ولي أمر ${appData.parents + 1}`,
-                grade: "الأول",
-                balance: "0 ريال",
-                parentPhone: "05" + Math.floor(100000000 + Math.random() * 900000000)
-            };
-            
-            appData.students++;
-            appData.parents++;
-            appData.studentsList.push(newStudent);
-            updateDashboard();
-            alert('تم إضافة طالب جديد بنجاح!');
+            addStudentModal.classList.remove('hidden');
         });
         
         // معالجة النقر على عناصر الشريط العلوي
@@ -1168,6 +1315,79 @@
             appData.currentSection = 'users';
             updateActiveNavItem();
             alert('تم الانتقال إلى قسم المستخدمين');
+        });
+        
+        // معالجة نافذة إضافة طالب
+        closeStudentModal.addEventListener('click', function() {
+            addStudentModal.classList.add('hidden');
+            addStudentForm.reset();
+        });
+        
+        // إغلاق النافذة عند النقر خارجها
+        addStudentModal.addEventListener('click', function(e) {
+            if (e.target === addStudentModal) {
+                addStudentModal.classList.add('hidden');
+                addStudentForm.reset();
+            }
+        });
+        
+        // معالجة إضافة طالب جديد
+        addStudentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // جمع البيانات من النموذج
+            const studentFirstName = document.getElementById('studentFirstName').value;
+            const studentSecondName = document.getElementById('studentSecondName').value;
+            const studentLastName = document.getElementById('studentLastName').value;
+            const studentBirthDate = document.getElementById('studentBirthDate').value;
+            const parentPhone = document.getElementById('parentPhone').value;
+            const parentFirstName = document.getElementById('parentFirstName').value;
+            const parentFatherName = document.getElementById('parentFatherName').value;
+            const parentGrandName = document.getElementById('parentGrandName').value;
+            const parentLastName = document.getElementById('parentLastName').value;
+            const studentLevel = document.getElementById('studentLevel').value;
+            const studentGrade = document.getElementById('studentGrade').value;
+            
+            // التحقق من صحة البيانات
+            if (!studentFirstName || !studentLastName || !parentPhone || !parentFirstName || 
+                !parentLastName || !studentLevel || !studentGrade) {
+                alert('يرجى ملء جميع الحقول المطلوبة (المحددة بعلامة *)');
+                return;
+            }
+            
+            if (!validatePhone(parentPhone)) {
+                alert('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)');
+                return;
+            }
+            
+            if (appData.students >= 5000) {
+                alert('لا يمكن إضافة المزيد من الطلاب. الحد الأقصى هو 5000 طالب.');
+                return;
+            }
+            
+            // إنشاء اسم الطالب وولي الأمر
+            const studentName = `${studentFirstName} ${studentSecondName ? studentSecondName + ' ' : ''}${studentLastName}`;
+            const parentName = `${parentFirstName} ${parentFatherName ? parentFatherName + ' ' : ''}${parentGrandName ? parentGrandName + ' ' : ''}${parentLastName}`;
+            
+            // إضافة الطالب الجديد
+            const newStudent = {
+                name: studentName,
+                level: studentLevel,
+                parent: parentName,
+                grade: studentGrade,
+                balance: "0 ريال",
+                parentPhone: parentPhone
+            };
+            
+            appData.students++;
+            appData.parents++;
+            appData.studentsList.push(newStudent);
+            
+            // إغلاق النافذة وتحديث البيانات
+            addStudentModal.classList.add('hidden');
+            addStudentForm.reset();
+            updateDashboard();
+            alert('تم إضافة الطالب الجديد بنجاح!');
         });
     </script>
 </body>
