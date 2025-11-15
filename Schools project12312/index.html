@@ -272,33 +272,6 @@
             font-weight: 600;
         }
         
-        .countdown {
-            text-align: center;
-            margin-top: 10px;
-            color: var(--olive);
-            font-weight: 600;
-        }
-        
-        .resend-code {
-            text-align: center;
-            margin-top: 15px;
-        }
-        
-        .resend-code a {
-            color: var(--olive);
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .resend-code a:hover {
-            text-decoration: underline;
-        }
-        
-        .resend-code.disabled a {
-            color: var(--gray);
-            cursor: not-allowed;
-        }
-        
         /* أنماط لوحة التحكم */
         .dashboard {
             display: none;
@@ -315,6 +288,8 @@
             top: 0;
             right: 0;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         
         .logo {
@@ -338,6 +313,7 @@
         .menu {
             list-style: none;
             padding: 0 15px;
+            flex: 1;
         }
         
         .menu li {
@@ -367,10 +343,36 @@
         }
         
         .footer-menu {
-            margin-top: 30px;
             padding: 0 15px;
             border-top: 1px solid var(--border);
             padding-top: 20px;
+        }
+        
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--error);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: right;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .logout-btn i {
+            margin-left: 10px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(231, 76, 60, 0.1);
         }
         
         .main-content {
@@ -605,40 +607,6 @@
             margin-bottom: 25px;
         }
         
-        /* تحسينات جديدة */
-        .search-container {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .search-box {
-            flex: 1;
-            position: relative;
-        }
-        
-        .search-box input {
-            padding-right: 40px;
-        }
-        
-        .search-icon {
-            position: absolute;
-            top: 50%;
-            right: 12px;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-        
-        .filter-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .filter-select {
-            min-width: 150px;
-        }
-        
         .notification {
             position: fixed;
             top: 20px;
@@ -706,7 +674,7 @@
                 overflow: visible;
             }
             
-            .logo h1, .logo p, .menu span {
+            .logo h1, .logo p, .menu span, .logout-btn span {
                 display: none;
             }
             
@@ -720,8 +688,14 @@
                 font-size: 20px;
             }
             
-            .footer-menu span {
-                display: none;
+            .logout-btn {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .logout-btn i {
+                margin-left: 0;
+                font-size: 20px;
             }
             
             .main-content {
@@ -745,10 +719,6 @@
             table {
                 display: block;
                 overflow-x: auto;
-            }
-            
-            .search-container, .filter-container {
-                flex-direction: column;
             }
         }
         
@@ -810,7 +780,7 @@
         <div class="forgot-password-container" id="forgotPasswordContainer">
             <div class="welcome-text">
                 <h1>تغيير كلمة المرور</h1>
-                <p>أدخل رقم جوالك لإرسال رمز التحقق</p>
+                <p>أدخل رقم جوالك لتغيير كلمة المرور</p>
             </div>
             
             <!-- مؤشر الخطوات -->
@@ -821,10 +791,6 @@
                 </div>
                 <div class="step-item" data-step="2">
                     <div class="step-number">2</div>
-                    <div class="step-label">رمز التحقق</div>
-                </div>
-                <div class="step-item" data-step="3">
-                    <div class="step-number">3</div>
                     <div class="step-label">كلمة المرور</div>
                 </div>
             </div>
@@ -840,34 +806,13 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="send-code-button">إرسال رمز التحقق</button>
+                    <button type="submit" class="send-code-button">التالي</button>
                     <button type="button" class="cancel-button" id="cancelChangePassword">إلغاء</button>
                 </form>
             </div>
             
-            <!-- الخطوة 2: إدخال رمز التحقق -->
+            <!-- الخطوة 2: إدخال كلمة المرور الجديدة -->
             <div class="step" id="step2">
-                <form id="verifyCodeForm">
-                    <div class="form-group">
-                        <label for="verificationCode">رمز التحقق *</label>
-                        <input type="number" id="verificationCode" placeholder="أدخل الرمز المكون من 6 أرقام" required maxlength="6">
-                        <div class="input-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="countdown" id="countdown">يمكنك إعادة الإرسال خلال: <span id="timer">60</span> ثانية</div>
-                    <div class="resend-code" id="resendCode">
-                        <a id="resendLink">إعادة إرسال الرمز</a>
-                    </div>
-                    
-                    <button type="submit" class="verify-code-button">تحقق من الرمز</button>
-                    <button type="button" class="cancel-button back-step" data-step="1">رجوع</button>
-                </form>
-            </div>
-            
-            <!-- الخطوة 3: إدخال كلمة المرور الجديدة -->
-            <div class="step" id="step3">
                 <form id="changePasswordForm">
                     <div class="form-group">
                         <label for="newPassword">كلمة المرور الجديدة *</label>
@@ -886,7 +831,7 @@
                     </div>
                     
                     <button type="submit" class="change-password-button">تغيير كلمة المرور</button>
-                    <button type="button" class="cancel-button back-step" data-step="2">رجوع</button>
+                    <button type="button" class="cancel-button back-step" data-step="1">رجوع</button>
                 </form>
             </div>
         </div>
@@ -911,10 +856,11 @@
             
             <div class="footer-menu">
                 <ul class="menu">
-                    <li><a href="#" id="changePasswordBtn"><i class="fas fa-key"></i> <span>تغيير كلمة السر</span></a></li>
                     <li><a href="#" id="technicalSupportDashboardLink"><i class="fas fa-headset"></i> <span>الدعم الفني</span></a></li>
-                    <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>تسجيل خروج</span></a></li>
                 </ul>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> <span>تسجيل خروج</span>
+                </button>
             </div>
         </div>
         
@@ -951,27 +897,6 @@
                     <h3>إجمالي الكاشير</h3>
                     <div class="number" id="cashierCount">0</div>
                     <div class="max">الحد الأقصى: 30 كاشير</div>
-                </div>
-            </div>
-            
-            <!-- البحث والتصفية -->
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="ابحث عن طالب...">
-                    <div class="search-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                </div>
-                <div class="filter-container">
-                    <select id="educationLevelFilter" class="filter-select">
-                        <option value="">جميع المراحل</option>
-                        <option value="ابتدائي">ابتدائي</option>
-                        <option value="متوسط">متوسط</option>
-                        <option value="ثانوي">ثانوي</option>
-                    </select>
-                    <select id="classFilter" class="filter-select">
-                        <option value="">جميع الصفوف</option>
-                    </select>
                 </div>
             </div>
             
@@ -1367,11 +1292,6 @@
             return true;
         }
         
-        // توليد رمز تحقق عشوائي
-        function generateVerificationCode() {
-            return Math.floor(100000 + Math.random() * 900000).toString();
-        }
-        
         // تغيير الخطوة في نموذج تغيير كلمة المرور
         function changeStep(currentStep, nextStep) {
             // إخفاء جميع الخطوات
@@ -1389,27 +1309,6 @@
                     item.classList.add('active');
                 }
             });
-        }
-        
-        // بدء عد تنازلي لإعادة إرسال الرمز
-        function startCountdown() {
-            let timeLeft = 60;
-            const timerElement = document.getElementById('timer');
-            const resendContainer = document.getElementById('resendCode');
-            
-            // تعطيل إعادة الإرسال مؤقتًا
-            resendContainer.classList.add('disabled');
-            
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    resendContainer.classList.remove('disabled');
-                    document.getElementById('countdown').textContent = 'يمكنك الآن إعادة إرسال الرمز';
-                }
-            }, 1000);
         }
         
         // إظهار إشعار
@@ -1508,7 +1407,7 @@
                 document.getElementById('loginContainer').style.display = 'block';
             });
             
-            // الخطوة 1: إرسال رمز التحقق
+            // الخطوة 1: إدخال رقم الجوال
             document.getElementById('phoneForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -1520,37 +1419,13 @@
                     return;
                 }
                 
-                // توليد رمز التحقق وحفظه
-                appData.resetCode = generateVerificationCode();
                 appData.resetPhone = phone;
                 
-                // في التطبيق الحقيقي، هنا سيتم إرسال الرمز إلى رقم الجوال
-                // لكننا سنعرضه في تنبيه لأغراض العرض فقط
-                showNotification(`تم إرسال رمز التحقق إلى ${phone}. الرمز هو: ${appData.resetCode} (هذا للعرض فقط)`, 'success');
-                
-                // الانتقال إلى الخطوة التالية
+                // الانتقال إلى الخطوة التالية مباشرة (تغيير كلمة المرور)
                 changeStep(1, 2);
-                
-                // بدء العد التنازلي
-                startCountdown();
             });
             
-            // الخطوة 2: التحقق من الرمز
-            document.getElementById('verifyCodeForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const enteredCode = document.getElementById('verificationCode').value;
-                
-                if (enteredCode !== appData.resetCode) {
-                    showNotification('رمز التحقق غير صحيح. يرجى المحاولة مرة أخرى.', 'error');
-                    return;
-                }
-                
-                // الانتقال إلى الخطوة التالية
-                changeStep(2, 3);
-            });
-            
-            // الخطوة 3: تغيير كلمة المرور
+            // الخطوة 2: تغيير كلمة المرور
             document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -1573,24 +1448,6 @@
                 // العودة إلى صفحة تسجيل الدخول
                 document.getElementById('forgotPasswordContainer').style.display = 'none';
                 document.getElementById('loginContainer').style.display = 'block';
-            });
-            
-            // إعادة إرسال رمز التحقق
-            document.getElementById('resendLink').addEventListener('click', function() {
-                const resendContainer = document.getElementById('resendCode');
-                
-                if (resendContainer.classList.contains('disabled')) {
-                    return;
-                }
-                
-                // توليد رمز جديد
-                appData.resetCode = generateVerificationCode();
-                
-                // في التطبيق الحقيقي، هنا سيتم إرسال الرمز إلى رقم الجوال
-                showNotification(`تم إعادة إرسال رمز التحقق إلى ${appData.resetPhone}. الرمز الجديد هو: ${appData.resetCode} (هذا للعرض فقط)`, 'success');
-                
-                // بدء العد التنازلي مرة أخرى
-                startCountdown();
             });
             
             // زر الرجوع للخطوات السابقة
@@ -1713,38 +1570,13 @@
                 document.getElementById('successModal').style.display = 'none';
             });
             
+            // زر تسجيل الخروج
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
                     localStorage.removeItem('isLoggedIn');
                     showLogin();
                     showNotification('تم تسجيل الخروج بنجاح', 'success');
                 }
-            });
-            
-            // إعداد المراحل الدراسية
-            document.getElementById('educationLevel').addEventListener('change', function() {
-                const level = this.value;
-                const classSelect = document.getElementById('class');
-                classSelect.innerHTML = '<option value="">اختر الصف</option>';
-                
-                if (level === 'ابتدائي') {
-                    for (let i = 1; i <= 6; i++) {
-                        classSelect.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
-                    }
-                } else if (level === 'متوسط' || level === 'ثانوي') {
-                    for (let i = 1; i <= 3; i++) {
-                        classSelect.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
-                    }
-                }
-            });
-            
-            // إغلاق النوافذ المنبثقة
-            document.querySelectorAll('.close-modal').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.modal').forEach(modal => {
-                        modal.style.display = 'none';
-                    });
-                });
             });
             
             // الدعم الفني
@@ -1782,88 +1614,31 @@
                 document.getElementById('supportForm').reset();
             });
             
-            // البحث في جدول الطلاب
-            document.getElementById('searchInput').addEventListener('input', function() {
-                filterStudents();
-            });
-            
-            // التصفية حسب المرحلة الدراسية
-            document.getElementById('educationLevelFilter').addEventListener('change', function() {
-                updateClassFilter();
-                filterStudents();
-            });
-            
-            // التصفية حسب الصف
-            document.getElementById('classFilter').addEventListener('change', function() {
-                filterStudents();
-            });
-        }
-        
-        // تصفية الطلاب حسب البحث والمرحلة والصف
-        function filterStudents() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const educationLevel = document.getElementById('educationLevelFilter').value;
-            const classFilter = document.getElementById('classFilter').value;
-            
-            const filteredStudents = appData.students.filter(student => {
-                const fullName = `${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}`.toLowerCase();
-                const guardianName = `${student.guardian.firstName} ${student.guardian.secondName} ${student.guardian.lastName}`.toLowerCase();
+            // إعداد المراحل الدراسية
+            document.getElementById('educationLevel').addEventListener('change', function() {
+                const level = this.value;
+                const classSelect = document.getElementById('class');
+                classSelect.innerHTML = '<option value="">اختر الصف</option>';
                 
-                const matchesSearch = !searchTerm || 
-                    fullName.includes(searchTerm) || 
-                    guardianName.includes(searchTerm) ||
-                    student.guardian.phone.includes(searchTerm);
-                
-                const matchesEducationLevel = !educationLevel || student.educationLevel === educationLevel;
-                const matchesClass = !classFilter || student.class === classFilter;
-                
-                return matchesSearch && matchesEducationLevel && matchesClass;
-            });
-            
-            updateStudentsTableWithFilter(filteredStudents);
-        }
-        
-        // تحديث جدول الطلاب بناءً على التصفية
-        function updateStudentsTableWithFilter(students) {
-            const studentsTable = document.getElementById('studentsTable');
-            if (students.length === 0) {
-                studentsTable.innerHTML = '<tr class="empty-table"><td colspan="6">لا توجد بيانات للعرض</td></tr>';
-                return;
-            }
-            
-            let tableHTML = '';
-            students.forEach((student) => {
-                tableHTML += `
-                    <tr>
-                        <td>${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}</td>
-                        <td>${student.educationLevel}</td>
-                        <td>${student.guardian.firstName} ${student.guardian.secondName} ${student.guardian.lastName}</td>
-                        <td>${student.class}</td>
-                        <td>${student.balance} ريال</td>
-                        <td>${student.guardian.phone}</td>
-                    </tr>
-                `;
-            });
-            
-            studentsTable.innerHTML = tableHTML;
-        }
-        
-        // تحديث خيارات الصفوف بناءً على المرحلة المحددة
-        function updateClassFilter() {
-            const educationLevel = document.getElementById('educationLevelFilter').value;
-            const classFilter = document.getElementById('classFilter');
-            
-            classFilter.innerHTML = '<option value="">جميع الصفوف</option>';
-            
-            if (educationLevel === 'ابتدائي') {
-                for (let i = 1; i <= 6; i++) {
-                    classFilter.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
+                if (level === 'ابتدائي') {
+                    for (let i = 1; i <= 6; i++) {
+                        classSelect.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
+                    }
+                } else if (level === 'متوسط' || level === 'ثانوي') {
+                    for (let i = 1; i <= 3; i++) {
+                        classSelect.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
+                    }
                 }
-            } else if (educationLevel === 'متوسط' || educationLevel === 'ثانوي') {
-                for (let i = 1; i <= 3; i++) {
-                    classFilter.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
-                }
-            }
+            });
+            
+            // إغلاق النوافذ المنبثقة
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                });
+            });
         }
         
         // تشغيل التطبيق
