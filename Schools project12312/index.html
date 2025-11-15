@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>النظام التعليمي - النصة الذكية</title>
+    <title>النظام التعليمي - المنصة الذكية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -22,6 +22,9 @@
             --gray-dark: #2c3e50;
             --white: #ffffff;
             --border: #e0e0e0;
+            --success: #27ae60;
+            --warning: #e67e22;
+            --error: #e74c3c;
         }
         
         body {
@@ -29,6 +32,7 @@
             padding: 0;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
             min-height: 100vh;
+            color: var(--gray-dark);
         }
         
         /* أنماط صفحة تسجيل الدخول */
@@ -84,8 +88,17 @@
             font-size: 14px;
         }
         
+        label.required::after {
+            content: " *";
+            color: var(--error);
+        }
+        
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        input[type="number"],
+        input[type="email"],
+        select,
+        textarea {
             width: 100%;
             padding: 14px 45px 14px 16px;
             border: 1px solid var(--border);
@@ -96,7 +109,11 @@
         }
         
         input[type="text"]:focus,
-        input[type="password"]:focus {
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
             border-color: var(--olive);
             outline: none;
             box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.1);
@@ -144,7 +161,7 @@
             text-decoration: underline;
         }
         
-        .login-button, .change-password-button, .back-to-login {
+        .login-button, .change-password-button, .back-to-login, .send-code-button, .verify-code-button {
             width: 100%;
             background: linear-gradient(to right, var(--olive), var(--olive-light));
             color: var(--white);
@@ -159,7 +176,8 @@
             margin-bottom: 10px;
         }
         
-        .login-button:hover, .change-password-button:hover, .back-to-login:hover {
+        .login-button:hover, .change-password-button:hover, .back-to-login:hover, 
+        .send-code-button:hover, .verify-code-button:hover {
             background: linear-gradient(to right, var(--olive-dark), var(--olive));
             box-shadow: 0 6px 12px rgba(107, 142, 35, 0.3);
             transform: translateY(-2px);
@@ -189,6 +207,96 @@
             font-size: 14px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
+        }
+        
+        /* مراحل تغيير كلمة المرور */
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background-color: var(--border);
+            z-index: 1;
+        }
+        
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--border);
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .step-item.active .step-number {
+            background-color: var(--olive);
+            color: var(--white);
+        }
+        
+        .step-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .step-item.active .step-label {
+            color: var(--olive);
+            font-weight: 600;
+        }
+        
+        .countdown {
+            text-align: center;
+            margin-top: 10px;
+            color: var(--olive);
+            font-weight: 600;
+        }
+        
+        .resend-code {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .resend-code a {
+            color: var(--olive);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .resend-code a:hover {
+            text-decoration: underline;
+        }
+        
+        .resend-code.disabled a {
+            color: var(--gray);
+            cursor: not-allowed;
         }
         
         /* أنماط لوحة التحكم */
@@ -489,11 +597,107 @@
         .success-modal h2 {
             color: var(--olive);
             margin-bottom: 15px;
+            font-size: 26px;
         }
         
         .success-modal p {
             color: var(--gray);
             margin-bottom: 25px;
+        }
+        
+        /* تحسينات جديدة */
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+        
+        .search-box input {
+            padding-right: 40px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-select {
+            min-width: 150px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            background-color: var(--success);
+        }
+        
+        .notification.error {
+            background-color: var(--error);
+        }
+        
+        .notification.warning {
+            background-color: var(--warning);
+        }
+        
+        .notification .close-notification {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         @media (max-width: 992px) {
@@ -542,6 +746,10 @@
                 display: block;
                 overflow-x: auto;
             }
+            
+            .search-container, .filter-container {
+                flex-direction: column;
+            }
         }
         
         @media (max-width: 480px) {
@@ -551,6 +759,11 @@
             
             .welcome-text h1 {
                 font-size: 24px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10px;
             }
         }
     </style>
@@ -589,7 +802,7 @@
             </form>
             
             <div class="help-text">
-                <p>تواجه مشكلة في الدخول؟ <a href="#">تواصل معنا</a></p>
+                <p>تواجه مشكلة في الدخول؟ <a href="#" id="technicalSupportLink">الدعم الفني</a></p>
             </div>
         </div>
         
@@ -597,37 +810,85 @@
         <div class="forgot-password-container" id="forgotPasswordContainer">
             <div class="welcome-text">
                 <h1>تغيير كلمة المرور</h1>
-                <p>أضف كلمة مرور جديدة من هنا</p>
+                <p>أدخل رقم جوالك لإرسال رمز التحقق</p>
             </div>
             
-            <form id="changePasswordForm">
-                <div class="form-group">
-                    <label for="oldPassword">كلمة المرور القديمة *</label>
-                    <input type="password" id="oldPassword" placeholder="......" required>
-                    <div class="password-toggle" id="oldPasswordToggle">
-                        <i class="far fa-eye-slash" id="oldPasswordIcon"></i>
-                    </div>
+            <!-- مؤشر الخطوات -->
+            <div class="step-indicator">
+                <div class="step-item active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">رقم الجوال</div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="newPassword">كلمة المرور الجديدة *</label>
-                    <input type="password" id="newPassword" placeholder="......" required>
-                    <div class="password-toggle" id="newPasswordToggle">
-                        <i class="far fa-eye-slash" id="newPasswordIcon"></i>
-                    </div>
+                <div class="step-item" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">رمز التحقق</div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">تأكيد كلمة المرور الجديدة *</label>
-                    <input type="password" id="confirmPassword" placeholder="......" required>
-                    <div class="password-toggle" id="confirmPasswordToggle">
-                        <i class="far fa-eye-slash" id="confirmPasswordIcon"></i>
-                    </div>
+                <div class="step-item" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">كلمة المرور</div>
                 </div>
-                
-                <button type="submit" class="change-password-button">تغيير كلمة المرور</button>
-                <button type="button" class="cancel-button" id="cancelChangePassword">إلغاء</button>
-            </form>
+            </div>
+            
+            <!-- الخطوة 1: إدخال رقم الجوال -->
+            <div class="step active" id="step1">
+                <form id="phoneForm">
+                    <div class="form-group">
+                        <label for="resetPhone">رقم الجوال *</label>
+                        <input type="text" id="resetPhone" placeholder="اكتب رقم الجوال هنا" required>
+                        <div class="input-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="send-code-button">إرسال رمز التحقق</button>
+                    <button type="button" class="cancel-button" id="cancelChangePassword">إلغاء</button>
+                </form>
+            </div>
+            
+            <!-- الخطوة 2: إدخال رمز التحقق -->
+            <div class="step" id="step2">
+                <form id="verifyCodeForm">
+                    <div class="form-group">
+                        <label for="verificationCode">رمز التحقق *</label>
+                        <input type="number" id="verificationCode" placeholder="أدخل الرمز المكون من 6 أرقام" required maxlength="6">
+                        <div class="input-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="countdown" id="countdown">يمكنك إعادة الإرسال خلال: <span id="timer">60</span> ثانية</div>
+                    <div class="resend-code" id="resendCode">
+                        <a id="resendLink">إعادة إرسال الرمز</a>
+                    </div>
+                    
+                    <button type="submit" class="verify-code-button">تحقق من الرمز</button>
+                    <button type="button" class="cancel-button back-step" data-step="1">رجوع</button>
+                </form>
+            </div>
+            
+            <!-- الخطوة 3: إدخال كلمة المرور الجديدة -->
+            <div class="step" id="step3">
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="newPassword">كلمة المرور الجديدة *</label>
+                        <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" required>
+                        <div class="password-toggle" id="newPasswordToggle">
+                            <i class="far fa-eye-slash" id="newPasswordIcon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">تأكيد كلمة المرور الجديدة *</label>
+                        <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة" required>
+                        <div class="password-toggle" id="confirmPasswordToggle">
+                            <i class="far fa-eye-slash" id="confirmPasswordIcon"></i>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="change-password-button">تغيير كلمة المرور</button>
+                    <button type="button" class="cancel-button back-step" data-step="2">رجوع</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -636,7 +897,7 @@
         <!-- الشريط الجانبي -->
         <div class="sidebar">
             <div class="logo">
-                <h1>النصة الذكية</h1>
+                <h1>المنصة الذكية</h1>
                 <p>SmartWallet</p>
             </div>
             
@@ -651,6 +912,7 @@
             <div class="footer-menu">
                 <ul class="menu">
                     <li><a href="#" id="changePasswordBtn"><i class="fas fa-key"></i> <span>تغيير كلمة السر</span></a></li>
+                    <li><a href="#" id="technicalSupportDashboardLink"><i class="fas fa-headset"></i> <span>الدعم الفني</span></a></li>
                     <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>تسجيل خروج</span></a></li>
                 </ul>
             </div>
@@ -660,7 +922,7 @@
         <div class="main-content">
             <div class="header">
                 <div>
-                    <h1>النصة الذكية</h1>
+                    <h1>المنصة الذكية</h1>
                     <p>SmartWallet</p>
                 </div>
                 <div class="user-info">
@@ -674,21 +936,42 @@
             <!-- البطاقات الإحصائية -->
             <div class="stats-cards">
                 <div class="card">
-                    <h3>الجمالي أجهزة الكاشير</h3>
-                    <div class="number" id="cashierCount">0</div>
-                    <div class="max">الحد الأقصى: 30 كاشير</div>
+                    <h3>إجمالي الطلاب</h3>
+                    <div class="number" id="studentCount">0</div>
+                    <div class="max">الحد الأقصى: 5000 طالب</div>
                 </div>
                 
                 <div class="card">
-                    <h3>الجمالي أولياء الأمور</h3>
+                    <h3>إجمالي أولياء الأمور</h3>
                     <div class="number" id="guardianCount">0</div>
                     <div class="max">الحد الأقصى: 2000 ولي أمر</div>
                 </div>
                 
                 <div class="card">
-                    <h3>الجمالي الطلاب</h3>
-                    <div class="number" id="studentCount">0</div>
-                    <div class="max">الحد الأقصى: 5000 طالب</div>
+                    <h3>إجمالي الكاشير</h3>
+                    <div class="number" id="cashierCount">0</div>
+                    <div class="max">الحد الأقصى: 30 كاشير</div>
+                </div>
+            </div>
+            
+            <!-- البحث والتصفية -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="ابحث عن طالب...">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="filter-container">
+                    <select id="educationLevelFilter" class="filter-select">
+                        <option value="">جميع المراحل</option>
+                        <option value="ابتدائي">ابتدائي</option>
+                        <option value="متوسط">متوسط</option>
+                        <option value="ثانوي">ثانوي</option>
+                    </select>
+                    <select id="classFilter" class="filter-select">
+                        <option value="">جميع الصفوف</option>
+                    </select>
                 </div>
             </div>
             
@@ -742,27 +1025,27 @@
                         <h3 style="color: var(--olive); margin-bottom: 15px;">بيانات الطالب</h3>
                         <div class="form-row">
                             <div>
-                                <label for="firstName">الاسم الأول *</label>
+                                <label for="firstName" class="required">الاسم الأول</label>
                                 <input type="text" id="firstName" required>
                             </div>
                             <div>
-                                <label for="secondName">اسم الأب *</label>
+                                <label for="secondName" class="required">اسم الأب</label>
                                 <input type="text" id="secondName" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="thirdName">اسم الجد *</label>
+                                <label for="thirdName" class="required">اسم الجد</label>
                                 <input type="text" id="thirdName" required>
                             </div>
                             <div>
-                                <label for="lastName">الاسم الأخير *</label>
+                                <label for="lastName" class="required">الاسم الأخير</label>
                                 <input type="text" id="lastName" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="educationLevel">المرحلة الدراسية *</label>
+                                <label for="educationLevel" class="required">المرحلة الدراسية</label>
                                 <select id="educationLevel" required>
                                     <option value="">اختر المرحلة</option>
                                     <option value="ابتدائي">ابتدائي</option>
@@ -771,7 +1054,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="class">الصف *</label>
+                                <label for="class" class="required">الصف</label>
                                 <select id="class" required>
                                     <option value="">اختر الصف</option>
                                 </select>
@@ -783,27 +1066,27 @@
                         <h3 style="color: var(--olive); margin-bottom: 15px;">بيانات ولي الأمر</h3>
                         <div class="form-row">
                             <div>
-                                <label for="guardianFirstName">الاسم الأول *</label>
+                                <label for="guardianFirstName" class="required">الاسم الأول</label>
                                 <input type="text" id="guardianFirstName" required>
                             </div>
                             <div>
-                                <label for="guardianSecondName">الاسم الثاني *</label>
+                                <label for="guardianSecondName" class="required">الاسم الثاني</label>
                                 <input type="text" id="guardianSecondName" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="guardianLastName">الاسم الأخير *</label>
+                                <label for="guardianLastName" class="required">الاسم الأخير</label>
                                 <input type="text" id="guardianLastName" required>
                             </div>
                             <div>
-                                <label for="guardianPhone">رقم الجوال *</label>
+                                <label for="guardianPhone" class="required">رقم الجوال</label>
                                 <input type="text" id="guardianPhone" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="guardianPassword">كلمة السر *</label>
+                                <label for="guardianPassword" class="required">كلمة السر</label>
                                 <input type="password" id="guardianPassword" required>
                             </div>
                         </div>
@@ -818,6 +1101,76 @@
         </div>
     </div>
     
+    <!-- نافذة إضافة كاشير جديد -->
+    <div class="modal" id="addCashierModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إضافة كاشير جديد</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addCashierForm">
+                    <div class="form-group">
+                        <h3 style="color: var(--olive); margin-bottom: 15px;">البيانات الأساسية</h3>
+                        <div class="form-row">
+                            <div>
+                                <label for="cashierFirstName" class="required">الاسم الأول</label>
+                                <input type="text" id="cashierFirstName" placeholder="أدخل الاسم الأول" required>
+                            </div>
+                            <div>
+                                <label for="cashierSecondName" class="required">الاسم الثاني</label>
+                                <input type="text" id="cashierSecondName" placeholder="أدخل الاسم الثاني" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="cashierLastName" class="required">الاسم الأخير</label>
+                                <input type="text" id="cashierLastName" placeholder="أدخل الاسم الأخير" required>
+                            </div>
+                            <div>
+                                <label for="cashierPhone" class="required">رقم الجوال</label>
+                                <input type="text" id="cashierPhone" placeholder="أدخل رقم الجوال" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="cashierPassword" class="required">كلمة السر</label>
+                                <input type="password" id="cashierPassword" placeholder="أدخل كلمة السر" required>
+                                <div class="password-toggle" id="cashierPasswordToggle">
+                                    <i class="far fa-eye-slash" id="cashierPasswordIcon"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="cashierEducationLevel" class="required">المرحلة الدراسية</label>
+                                <select id="cashierEducationLevel" required>
+                                    <option value="">اختر المرحلة</option>
+                                    <option value="ابتدائي">ابتدائي</option>
+                                    <option value="متوسط">متوسط</option>
+                                    <option value="ثانوي">ثانوي</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="cashierGender" class="required">الجنس</label>
+                                <select id="cashierGender" required>
+                                    <option value="">اختر الجنس</option>
+                                    <option value="ذكر">ذكر</option>
+                                    <option value="أنثى">أنثى</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">إضافة الكاشير</button>
+                        <button type="button" class="btn btn-cancel close-modal">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <!-- نافذة النجاح -->
     <div class="modal" id="successModal">
         <div class="modal-content">
@@ -825,12 +1178,59 @@
                 <div class="success-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <h2>تم إضافة طالب جديد بنجاح!</h2>
-                <p>تمت إضافة الطالب إلى النظام بنجاح</p>
+                <h2 id="successTitle">تم إضافة طالب جديد بنجاح!</h2>
+                <p id="successMessage">تمت إضافة الطالب إلى النظام بنجاح</p>
                 <button class="btn btn-primary" id="successOkBtn">التالي</button>
             </div>
         </div>
     </div>
+
+    <!-- نافذة الدعم الفني -->
+    <div class="modal" id="technicalSupportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>الدعم الفني</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <h3 style="color: var(--olive); margin-bottom: 15px;">تواصل مع الدعم الفني</h3>
+                    <p style="margin-bottom: 20px;">للاستفسارات والمشاكل الفنية، يرجى التواصل معنا عبر:</p>
+                    
+                    <div style="background-color: var(--gray-light); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <p><i class="fas fa-phone" style="color: var(--olive); margin-left: 10px;"></i> <strong>رقم الهاتف:</strong> 8001234567</p>
+                        <p><i class="fas fa-envelope" style="color: var(--olive); margin-left: 10px;"></i> <strong>البريد الإلكتروني:</strong> support@smartwallet.com</p>
+                        <p><i class="fas fa-clock" style="color: var(--olive); margin-left: 10px;"></i> <strong>ساعات العمل:</strong> من الأحد إلى الخميس، 8 صباحاً - 5 مساءً</p>
+                    </div>
+                    
+                    <form id="supportForm">
+                        <div class="form-group">
+                            <label for="supportName">الاسم الكامل *</label>
+                            <input type="text" id="supportName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="supportPhone">رقم الجوال *</label>
+                            <input type="text" id="supportPhone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="supportMessage">الرسالة *</label>
+                            <textarea id="supportMessage" rows="4" style="width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 6px; font-size: 15px; transition: all 0.3s; background-color: var(--gray-light);" required></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">إرسال الرسالة</button>
+                            <button type="button" class="btn btn-cancel close-modal">إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- منطقة الإشعارات -->
+    <div id="notificationArea"></div>
 
     <script>
         // بيانات التطبيق
@@ -840,7 +1240,9 @@
             cashiers: [],
             maxStudents: 5000,
             maxGuardians: 2000,
-            maxCashiers: 30
+            maxCashiers: 30,
+            resetCode: null,
+            resetPhone: null
         };
         
         // التحقق من حالة تسجيل الدخول
@@ -902,12 +1304,12 @@
         // إضافة طالب جديد
         function addStudent(studentData) {
             if (appData.students.length >= appData.maxStudents) {
-                alert(`لا يمكن إضافة المزيد من الطلاب. الحد الأقصى هو ${appData.maxStudents} طالب`);
+                showNotification('لا يمكن إضافة المزيد من الطلاب. الحد الأقصى هو ' + appData.maxStudents + ' طالب', 'error');
                 return false;
             }
             
             if (appData.guardians.length >= appData.maxGuardians) {
-                alert(`لا يمكن إضافة المزيد من أولياء الأمور. الحد الأقصى هو ${appData.maxGuardians} ولي أمر`);
+                showNotification('لا يمكن إضافة المزيد من أولياء الأمور. الحد الأقصى هو ' + appData.maxGuardians + ' ولي أمر', 'error');
                 return false;
             }
             
@@ -941,6 +1343,119 @@
             return true;
         }
         
+        // إضافة كاشير جديد
+        function addCashier(cashierData) {
+            if (appData.cashiers.length >= appData.maxCashiers) {
+                showNotification('لا يمكن إضافة المزيد من الكاشير. الحد الأقصى هو ' + appData.maxCashiers + ' كاشير', 'error');
+                return false;
+            }
+            
+            const cashier = {
+                id: Date.now(),
+                firstName: cashierData.firstName,
+                secondName: cashierData.secondName,
+                lastName: cashierData.lastName,
+                phone: cashierData.phone,
+                password: cashierData.password,
+                educationLevel: cashierData.educationLevel,
+                gender: cashierData.gender
+            };
+            
+            appData.cashiers.push(cashier);
+            
+            updateStats();
+            return true;
+        }
+        
+        // توليد رمز تحقق عشوائي
+        function generateVerificationCode() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+        
+        // تغيير الخطوة في نموذج تغيير كلمة المرور
+        function changeStep(currentStep, nextStep) {
+            // إخفاء جميع الخطوات
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // إظهار الخطوة المطلوبة
+            document.getElementById(`step${nextStep}`).classList.add('active');
+            
+            // تحديث مؤشر الخطوات
+            document.querySelectorAll('.step-item').forEach(item => {
+                item.classList.remove('active');
+                if (parseInt(item.dataset.step) <= nextStep) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        // بدء عد تنازلي لإعادة إرسال الرمز
+        function startCountdown() {
+            let timeLeft = 60;
+            const timerElement = document.getElementById('timer');
+            const resendContainer = document.getElementById('resendCode');
+            
+            // تعطيل إعادة الإرسال مؤقتًا
+            resendContainer.classList.add('disabled');
+            
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    resendContainer.classList.remove('disabled');
+                    document.getElementById('countdown').textContent = 'يمكنك الآن إعادة إرسال الرمز';
+                }
+            }, 1000);
+        }
+        
+        // إظهار إشعار
+        function showNotification(message, type = 'success') {
+            const notificationArea = document.getElementById('notificationArea');
+            const notificationId = 'notification-' + Date.now();
+            
+            const notification = document.createElement('div');
+            notification.id = notificationId;
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <span>${message}</span>
+                <button class="close-notification">&times;</button>
+            `;
+            
+            notificationArea.appendChild(notification);
+            
+            // إظهار الإشعار
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // إغلاق الإشعار عند النقر على الزر
+            notification.querySelector('.close-notification').addEventListener('click', () => {
+                closeNotification(notificationId);
+            });
+            
+            // إغلاق الإشعار تلقائياً بعد 5 ثوانٍ
+            setTimeout(() => {
+                closeNotification(notificationId);
+            }, 5000);
+        }
+        
+        // إغلاق الإشعار
+        function closeNotification(notificationId) {
+            const notification = document.getElementById(notificationId);
+            if (notification) {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }
+        }
+        
         // إعداد التطبيق
         function init() {
             checkLoginStatus();
@@ -954,30 +1469,162 @@
                 
                 const phoneRegex = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
                 if (!phoneRegex.test(phone)) {
-                    alert('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)');
+                    showNotification('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)', 'error');
                     return;
                 }
                 
                 if (password.length < 6) {
-                    alert('كلمة السر يجب أن تكون 6 أحرف على الأقل');
+                    showNotification('كلمة السر يجب أن تكون 6 أحرف على الأقل', 'error');
                     return;
                 }
                 
                 const loginButton = document.querySelector('.login-button');
-                loginButton.textContent = 'جاري التسجيل...';
+                const originalText = loginButton.textContent;
+                loginButton.innerHTML = 'جاري التسجيل... <span class="loading"></span>';
                 loginButton.disabled = true;
                 
                 setTimeout(function() {
                     localStorage.setItem('isLoggedIn', 'true');
                     showDashboard();
-                    loginButton.textContent = 'تسجيل دخول';
+                    loginButton.innerHTML = originalText;
                     loginButton.disabled = false;
+                    showNotification('تم تسجيل الدخول بنجاح!', 'success');
                 }, 1500);
+            });
+            
+            // نسيت كلمة السر - فتح النموذج
+            document.getElementById('forgotPasswordLink').addEventListener('click', function() {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('forgotPasswordContainer').style.display = 'block';
+                
+                // إعادة تعيين النموذج
+                document.getElementById('phoneForm').reset();
+                changeStep(1, 1);
+            });
+            
+            // إلغاء تغيير كلمة المرور
+            document.getElementById('cancelChangePassword').addEventListener('click', function() {
+                document.getElementById('forgotPasswordContainer').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'block';
+            });
+            
+            // الخطوة 1: إرسال رمز التحقق
+            document.getElementById('phoneForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const phone = document.getElementById('resetPhone').value;
+                const phoneRegex = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+                
+                if (!phoneRegex.test(phone)) {
+                    showNotification('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)', 'error');
+                    return;
+                }
+                
+                // توليد رمز التحقق وحفظه
+                appData.resetCode = generateVerificationCode();
+                appData.resetPhone = phone;
+                
+                // في التطبيق الحقيقي، هنا سيتم إرسال الرمز إلى رقم الجوال
+                // لكننا سنعرضه في تنبيه لأغراض العرض فقط
+                showNotification(`تم إرسال رمز التحقق إلى ${phone}. الرمز هو: ${appData.resetCode} (هذا للعرض فقط)`, 'success');
+                
+                // الانتقال إلى الخطوة التالية
+                changeStep(1, 2);
+                
+                // بدء العد التنازلي
+                startCountdown();
+            });
+            
+            // الخطوة 2: التحقق من الرمز
+            document.getElementById('verifyCodeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const enteredCode = document.getElementById('verificationCode').value;
+                
+                if (enteredCode !== appData.resetCode) {
+                    showNotification('رمز التحقق غير صحيح. يرجى المحاولة مرة أخرى.', 'error');
+                    return;
+                }
+                
+                // الانتقال إلى الخطوة التالية
+                changeStep(2, 3);
+            });
+            
+            // الخطوة 3: تغيير كلمة المرور
+            document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (newPassword !== confirmPassword) {
+                    showNotification('كلمات المرور غير متطابقة. يرجى التأكد من تطابق كلمة المرور وتأكيدها.', 'error');
+                    return;
+                }
+                
+                if (newPassword.length < 6) {
+                    showNotification('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+                    return;
+                }
+                
+                // في التطبيق الحقيقي، هنا سيتم تغيير كلمة المرور في قاعدة البيانات
+                showNotification('تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.', 'success');
+                
+                // العودة إلى صفحة تسجيل الدخول
+                document.getElementById('forgotPasswordContainer').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'block';
+            });
+            
+            // إعادة إرسال رمز التحقق
+            document.getElementById('resendLink').addEventListener('click', function() {
+                const resendContainer = document.getElementById('resendCode');
+                
+                if (resendContainer.classList.contains('disabled')) {
+                    return;
+                }
+                
+                // توليد رمز جديد
+                appData.resetCode = generateVerificationCode();
+                
+                // في التطبيق الحقيقي، هنا سيتم إرسال الرمز إلى رقم الجوال
+                showNotification(`تم إعادة إرسال رمز التحقق إلى ${appData.resetPhone}. الرمز الجديد هو: ${appData.resetCode} (هذا للعرض فقط)`, 'success');
+                
+                // بدء العد التنازلي مرة أخرى
+                startCountdown();
+            });
+            
+            // زر الرجوع للخطوات السابقة
+            document.querySelectorAll('.back-step').forEach(button => {
+                button.addEventListener('click', function() {
+                    const step = parseInt(this.dataset.step);
+                    changeStep(step + 1, step);
+                });
+            });
+            
+            // إعداد إظهار/إخفاء كلمة السر
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    }
+                });
             });
             
             // إعداد أحداث لوحة التحكم
             document.getElementById('addStudentBtn').addEventListener('click', function() {
                 document.getElementById('addStudentModal').style.display = 'flex';
+            });
+            
+            document.getElementById('addCashierBtn').addEventListener('click', function() {
+                document.getElementById('addCashierModal').style.display = 'flex';
             });
             
             document.getElementById('addStudentForm').addEventListener('submit', function(e) {
@@ -1001,21 +1648,64 @@
                     !formData.educationLevel || !formData.class || !formData.guardianFirstName || 
                     !formData.guardianSecondName || !formData.guardianLastName || !formData.guardianPhone || 
                     !formData.guardianPassword) {
-                    alert('يرجى ملء جميع الحقول المطلوبة');
+                    showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
                     return;
                 }
                 
                 const phoneRegex = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
                 if (!phoneRegex.test(formData.guardianPhone)) {
-                    alert('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)');
+                    showNotification('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)', 'error');
                     return;
                 }
                 
                 if (addStudent(formData)) {
                     document.getElementById('addStudentModal').style.display = 'none';
+                    document.getElementById('successTitle').textContent = 'تم إضافة طالب جديد بنجاح!';
+                    document.getElementById('successMessage').textContent = 'تمت إضافة الطالب إلى النظام بنجاح';
                     document.getElementById('successModal').style.display = 'flex';
                     document.getElementById('addStudentForm').reset();
                     document.getElementById('class').innerHTML = '<option value="">اختر الصف</option>';
+                    showNotification('تم إضافة الطالب بنجاح!', 'success');
+                }
+            });
+            
+            document.getElementById('addCashierForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    firstName: document.getElementById('cashierFirstName').value,
+                    secondName: document.getElementById('cashierSecondName').value,
+                    lastName: document.getElementById('cashierLastName').value,
+                    phone: document.getElementById('cashierPhone').value,
+                    password: document.getElementById('cashierPassword').value,
+                    educationLevel: document.getElementById('cashierEducationLevel').value,
+                    gender: document.getElementById('cashierGender').value
+                };
+                
+                if (!formData.firstName || !formData.secondName || !formData.lastName || 
+                    !formData.phone || !formData.password || !formData.educationLevel || !formData.gender) {
+                    showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
+                
+                const phoneRegex = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+                if (!phoneRegex.test(formData.phone)) {
+                    showNotification('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)', 'error');
+                    return;
+                }
+                
+                if (formData.password.length < 6) {
+                    showNotification('كلمة السر يجب أن تكون 6 أحرف على الأقل', 'error');
+                    return;
+                }
+                
+                if (addCashier(formData)) {
+                    document.getElementById('addCashierModal').style.display = 'none';
+                    document.getElementById('successTitle').textContent = 'تـم إضافة كاشير جديد بنجاح!';
+                    document.getElementById('successMessage').textContent = 'تمت إضافة الكاشير إلى النظام بنجاح';
+                    document.getElementById('successModal').style.display = 'flex';
+                    document.getElementById('addCashierForm').reset();
+                    showNotification('تـم إضافة كاشير جديد بنجاح!', 'success');
                 }
             });
             
@@ -1027,6 +1717,7 @@
                 if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
                     localStorage.removeItem('isLoggedIn');
                     showLogin();
+                    showNotification('تم تسجيل الخروج بنجاح', 'success');
                 }
             });
             
@@ -1047,23 +1738,6 @@
                 }
             });
             
-            // إعداد إظهار/إخفاء كلمة السر
-            document.querySelectorAll('.password-toggle').forEach(toggle => {
-                toggle.addEventListener('click', function() {
-                    const input = this.parentElement.querySelector('input');
-                    const icon = this.querySelector('i');
-                    if (input.type === 'password') {
-                        input.type = 'text';
-                        icon.classList.remove('fa-eye-slash');
-                        icon.classList.add('fa-eye');
-                    } else {
-                        input.type = 'password';
-                        icon.classList.remove('fa-eye');
-                        icon.classList.add('fa-eye-slash');
-                    }
-                });
-            });
-            
             // إغلاق النوافذ المنبثقة
             document.querySelectorAll('.close-modal').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -1073,16 +1747,123 @@
                 });
             });
             
-            // نسيت كلمة السر
-            document.getElementById('forgotPasswordLink').addEventListener('click', function() {
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('forgotPasswordContainer').style.display = 'block';
+            // الدعم الفني
+            document.getElementById('technicalSupportLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('technicalSupportModal').style.display = 'flex';
             });
             
-            document.getElementById('cancelChangePassword').addEventListener('click', function() {
-                document.getElementById('forgotPasswordContainer').style.display = 'none';
-                document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('technicalSupportDashboardLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('technicalSupportModal').style.display = 'flex';
             });
+            
+            document.getElementById('supportForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('supportName').value;
+                const phone = document.getElementById('supportPhone').value;
+                const message = document.getElementById('supportMessage').value;
+                
+                if (!name || !phone || !message) {
+                    showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
+                
+                const phoneRegex = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+                if (!phoneRegex.test(phone)) {
+                    showNotification('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)', 'error');
+                    return;
+                }
+                
+                // محاكاة إرسال الرسالة
+                showNotification('تم إرسال رسالتك بنجاح! سيتواصل معك الدعم الفني خلال 24 ساعة.', 'success');
+                document.getElementById('technicalSupportModal').style.display = 'none';
+                document.getElementById('supportForm').reset();
+            });
+            
+            // البحث في جدول الطلاب
+            document.getElementById('searchInput').addEventListener('input', function() {
+                filterStudents();
+            });
+            
+            // التصفية حسب المرحلة الدراسية
+            document.getElementById('educationLevelFilter').addEventListener('change', function() {
+                updateClassFilter();
+                filterStudents();
+            });
+            
+            // التصفية حسب الصف
+            document.getElementById('classFilter').addEventListener('change', function() {
+                filterStudents();
+            });
+        }
+        
+        // تصفية الطلاب حسب البحث والمرحلة والصف
+        function filterStudents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const educationLevel = document.getElementById('educationLevelFilter').value;
+            const classFilter = document.getElementById('classFilter').value;
+            
+            const filteredStudents = appData.students.filter(student => {
+                const fullName = `${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}`.toLowerCase();
+                const guardianName = `${student.guardian.firstName} ${student.guardian.secondName} ${student.guardian.lastName}`.toLowerCase();
+                
+                const matchesSearch = !searchTerm || 
+                    fullName.includes(searchTerm) || 
+                    guardianName.includes(searchTerm) ||
+                    student.guardian.phone.includes(searchTerm);
+                
+                const matchesEducationLevel = !educationLevel || student.educationLevel === educationLevel;
+                const matchesClass = !classFilter || student.class === classFilter;
+                
+                return matchesSearch && matchesEducationLevel && matchesClass;
+            });
+            
+            updateStudentsTableWithFilter(filteredStudents);
+        }
+        
+        // تحديث جدول الطلاب بناءً على التصفية
+        function updateStudentsTableWithFilter(students) {
+            const studentsTable = document.getElementById('studentsTable');
+            if (students.length === 0) {
+                studentsTable.innerHTML = '<tr class="empty-table"><td colspan="6">لا توجد بيانات للعرض</td></tr>';
+                return;
+            }
+            
+            let tableHTML = '';
+            students.forEach((student) => {
+                tableHTML += `
+                    <tr>
+                        <td>${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}</td>
+                        <td>${student.educationLevel}</td>
+                        <td>${student.guardian.firstName} ${student.guardian.secondName} ${student.guardian.lastName}</td>
+                        <td>${student.class}</td>
+                        <td>${student.balance} ريال</td>
+                        <td>${student.guardian.phone}</td>
+                    </tr>
+                `;
+            });
+            
+            studentsTable.innerHTML = tableHTML;
+        }
+        
+        // تحديث خيارات الصفوف بناءً على المرحلة المحددة
+        function updateClassFilter() {
+            const educationLevel = document.getElementById('educationLevelFilter').value;
+            const classFilter = document.getElementById('classFilter');
+            
+            classFilter.innerHTML = '<option value="">جميع الصفوف</option>';
+            
+            if (educationLevel === 'ابتدائي') {
+                for (let i = 1; i <= 6; i++) {
+                    classFilter.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
+                }
+            } else if (educationLevel === 'متوسط' || educationLevel === 'ثانوي') {
+                for (let i = 1; i <= 3; i++) {
+                    classFilter.innerHTML += `<option value="الصف ${i}">الصف ${i}</option>`;
+                }
+            }
         }
         
         // تشغيل التطبيق
