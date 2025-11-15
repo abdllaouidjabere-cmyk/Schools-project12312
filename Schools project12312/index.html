@@ -472,6 +472,15 @@
             transform: translateY(-2px);
         }
         
+        .btn-danger {
+            background: var(--error);
+            color: var(--white);
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
         .table-container {
             background: var(--white);
             border-radius: 10px;
@@ -482,6 +491,9 @@
         .table-header {
             padding: 20px;
             border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .table-header h3 {
@@ -514,6 +526,29 @@
             padding: 40px;
             text-align: center;
             color: var(--gray);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .delete-btn {
+            background: var(--error);
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c0392b;
         }
         
         .modal {
@@ -666,6 +701,14 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
         }
         
         @media (max-width: 992px) {
@@ -847,11 +890,11 @@
             </div>
             
             <ul class="menu">
-                <li><a href="#" class="active"><i class="fas fa-home"></i> <span>الرئيسية</span></a></li>
-                <li><a href="#"><i class="fas fa-user-graduate"></i> <span>الطلاب</span></a></li>
-                <li><a href="#"><i class="fas fa-users"></i> <span>أولياء الأمور</span></a></li>
-                <li><a href="#"><i class="fas fa-cash-register"></i> <span>الكاشير</span></a></li>
-                <li><a href="#"><i class="fas fa-user-cog"></i> <span>المستخدمين</span></a></li>
+                <li><a href="#" class="menu-link active" data-section="home"><i class="fas fa-home"></i> <span>الرئيسية</span></a></li>
+                <li><a href="#" class="menu-link" data-section="students"><i class="fas fa-user-graduate"></i> <span>الطلاب</span></a></li>
+                <li><a href="#" class="menu-link" data-section="guardians"><i class="fas fa-users"></i> <span>أولياء الأمور</span></a></li>
+                <li><a href="#" class="menu-link" data-section="cashiers"><i class="fas fa-cash-register"></i> <span>الكاشير</span></a></li>
+                <li><a href="#" class="menu-link" data-section="users"><i class="fas fa-user-cog"></i> <span>المستخدمين</span></a></li>
             </ul>
             
             <div class="footer-menu">
@@ -866,73 +909,163 @@
         
         <!-- المحتوى الرئيسي -->
         <div class="main-content">
-            <div class="header">
-                <div>
-                    <h1>المنصة الذكية</h1>
-                    <p>SmartWallet</p>
-                </div>
-                <div class="user-info">
-                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--olive); display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px;">
-                        <i class="fas fa-user"></i>
+            <!-- قسم الرئيسية -->
+            <div class="content-section active" id="home-section">
+                <div class="header">
+                    <div>
+                        <h1>المنصة الذكية</h1>
+                        <p>SmartWallet</p>
                     </div>
-                    <span>مدير النظام</span>
+                    <div class="user-info">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--olive); display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>مدير النظام</span>
+                    </div>
+                </div>
+                
+                <!-- البطاقات الإحصائية -->
+                <div class="stats-cards">
+                    <div class="card">
+                        <h3>إجمالي الطلاب</h3>
+                        <div class="number" id="studentCount">0</div>
+                        <div class="max">الحد الأقصى: 5000 طالب</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>إجمالي أولياء الأمور</h3>
+                        <div class="number" id="guardianCount">0</div>
+                        <div class="max">الحد الأقصى: 2000 ولي أمر</div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>إجمالي الكاشير</h3>
+                        <div class="number" id="cashierCount">0</div>
+                        <div class="max">الحد الأقصى: 30 كاشير</div>
+                    </div>
+                </div>
+                
+                <!-- أزرار الإضافة -->
+                <div class="actions">
+                    <button class="btn btn-primary" id="addCashierBtn">
+                        <i class="fas fa-plus"></i> إضافة كاشير جديد
+                    </button>
+                    <button class="btn btn-primary" id="addStudentBtn">
+                        <i class="fas fa-plus"></i> إضافة طالب جديد
+                    </button>
+                </div>
+                
+                <!-- جدول الطلاب -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>عرض الكل</h3>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم الطالب</th>
+                                <th>المرحلة الدراسية</th>
+                                <th>ولي الأمر</th>
+                                <th>الصف</th>
+                                <th>الرصيد</th>
+                                <th>رقم هاتف ولي الأمر</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTable">
+                            <tr class="empty-table">
+                                <td colspan="6">لا توجد بيانات للعرض</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
-            <!-- البطاقات الإحصائية -->
-            <div class="stats-cards">
-                <div class="card">
-                    <h3>إجمالي الطلاب</h3>
-                    <div class="number" id="studentCount">0</div>
-                    <div class="max">الحد الأقصى: 5000 طالب</div>
+            <!-- قسم الطلاب -->
+            <div class="content-section" id="students-section">
+                <div class="header">
+                    <div>
+                        <h1>إدارة الطلاب</h1>
+                        <p>عرض وإدارة جميع الطلاب في النظام</p>
+                    </div>
+                    <div class="user-info">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--olive); display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>مدير النظام</span>
+                    </div>
                 </div>
                 
-                <div class="card">
-                    <h3>إجمالي أولياء الأمور</h3>
-                    <div class="number" id="guardianCount">0</div>
-                    <div class="max">الحد الأقصى: 2000 ولي أمر</div>
+                <!-- أزرار الإجراءات -->
+                <div class="actions">
+                    <button class="btn btn-primary" id="addStudentFromStudentsBtn">
+                        <i class="fas fa-plus"></i> إضافة طالب جديد
+                    </button>
                 </div>
                 
-                <div class="card">
-                    <h3>إجمالي الكاشير</h3>
-                    <div class="number" id="cashierCount">0</div>
-                    <div class="max">الحد الأقصى: 30 كاشير</div>
+                <!-- جدول الطلاب -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>قائمة الطلاب</h3>
+                        <div>
+                            <input type="text" id="studentSearch" placeholder="بحث عن طالب..." style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 4px; width: 250px;">
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم الطالب</th>
+                                <th>المرحلة الدراسية</th>
+                                <th>الصف</th>
+                                <th>ولي الأمر</th>
+                                <th>رقم هاتف ولي الأمر</th>
+                                <th>الرصيد</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsManagementTable">
+                            <!-- سيتم ملؤها بالبيانات من JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
-            <!-- أزرار الإضافة -->
-            <div class="actions">
-                <button class="btn btn-primary" id="addCashierBtn">
-                    <i class="fas fa-plus"></i> إضافة كاشير جديد
-                </button>
-                <button class="btn btn-primary" id="addStudentBtn">
-                    <i class="fas fa-plus"></i> إضافة طالب جديد
-                </button>
+            <!-- أقسام أخرى يمكن إضافتها لاحقًا -->
+            <div class="content-section" id="guardians-section">
+                <div class="header">
+                    <div>
+                        <h1>إدارة أولياء الأمور</h1>
+                        <p>عرض وإدارة جميع أولياء الأمور في النظام</p>
+                    </div>
+                </div>
+                <div class="empty-table">
+                    <p>سيتم إضافة محتوى أولياء الأمور قريباً</p>
+                </div>
             </div>
             
-            <!-- جدول الطلاب -->
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>عرض الكل</h3>
+            <div class="content-section" id="cashiers-section">
+                <div class="header">
+                    <div>
+                        <h1>إدارة الكاشير</h1>
+                        <p>عرض وإدارة جميع الكاشير في النظام</p>
+                    </div>
                 </div>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            <th>اسم الطالب</th>
-                            <th>المرحلة الدراسية</th>
-                            <th>ولي الأمر</th>
-                            <th>الصف</th>
-                            <th>الرصيد</th>
-                            <th>رقم هاتف ولي الأمر</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentsTable">
-                        <tr class="empty-table">
-                            <td colspan="6">لا توجد بيانات للعرض</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="empty-table">
+                    <p>سيتم إضافة محتوى الكاشير قريباً</p>
+                </div>
+            </div>
+            
+            <div class="content-section" id="users-section">
+                <div class="header">
+                    <div>
+                        <h1>إدارة المستخدمين</h1>
+                        <p>عرض وإدارة جميع المستخدمين في النظام</p>
+                    </div>
+                </div>
+                <div class="empty-table">
+                    <p>سيتم إضافة محتوى المستخدمين قريباً</p>
+                </div>
             </div>
         </div>
     </div>
@@ -1110,50 +1243,6 @@
         </div>
     </div>
 
-    <!-- نافذة الدعم الفني -->
-    <div class="modal" id="technicalSupportModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>الدعم الفني</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <h3 style="color: var(--olive); margin-bottom: 15px;">تواصل مع الدعم الفني</h3>
-                    <p style="margin-bottom: 20px;">للاستفسارات والمشاكل الفنية، يرجى التواصل معنا عبر:</p>
-                    
-                    <div style="background-color: var(--gray-light); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                        <p><i class="fas fa-phone" style="color: var(--olive); margin-left: 10px;"></i> <strong>رقم الهاتف:</strong> 8001234567</p>
-                        <p><i class="fas fa-envelope" style="color: var(--olive); margin-left: 10px;"></i> <strong>البريد الإلكتروني:</strong> support@smartwallet.com</p>
-                        <p><i class="fas fa-clock" style="color: var(--olive); margin-left: 10px;"></i> <strong>ساعات العمل:</strong> من الأحد إلى الخميس، 8 صباحاً - 5 مساءً</p>
-                    </div>
-                    
-                    <form id="supportForm">
-                        <div class="form-group">
-                            <label for="supportName">الاسم الكامل *</label>
-                            <input type="text" id="supportName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="supportPhone">رقم الجوال *</label>
-                            <input type="text" id="supportPhone" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="supportMessage">الرسالة *</label>
-                            <textarea id="supportMessage" rows="4" style="width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 6px; font-size: 15px; transition: all 0.3s; background-color: var(--gray-light);" required></textarea>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">إرسال الرسالة</button>
-                            <button type="button" class="btn btn-cancel close-modal">إلغاء</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- منطقة الإشعارات -->
     <div id="notificationArea"></div>
 
@@ -1192,6 +1281,7 @@
             document.getElementById('dashboard').style.display = 'block';
             updateStats();
             updateStudentsTable();
+            updateStudentsManagementTable();
         }
         
         // تحديث الإحصائيات
@@ -1201,7 +1291,7 @@
             document.getElementById('cashierCount').textContent = appData.cashiers.length;
         }
         
-        // تحديث جدول الطلاب
+        // تحديث جدول الطلاب في الرئيسية
         function updateStudentsTable() {
             const studentsTable = document.getElementById('studentsTable');
             if (appData.students.length === 0) {
@@ -1224,6 +1314,80 @@
             });
             
             studentsTable.innerHTML = tableHTML;
+        }
+        
+        // تحديث جدول إدارة الطلاب
+        function updateStudentsManagementTable() {
+            const studentsTable = document.getElementById('studentsManagementTable');
+            if (appData.students.length === 0) {
+                studentsTable.innerHTML = '<tr class="empty-table"><td colspan="7">لا توجد بيانات للعرض</td></tr>';
+                return;
+            }
+            
+            let tableHTML = '';
+            appData.students.forEach((student, index) => {
+                tableHTML += `
+                    <tr>
+                        <td>${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}</td>
+                        <td>${student.educationLevel}</td>
+                        <td>${student.class}</td>
+                        <td>${student.guardian.firstName} ${student.guardian.secondName} ${student.guardian.lastName}</td>
+                        <td>${student.guardian.phone}</td>
+                        <td>${student.balance} ريال</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn delete-btn" data-index="${index}">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            studentsTable.innerHTML = tableHTML;
+            
+            // إضافة أحداث الحذف
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    deleteStudent(index);
+                });
+            });
+            
+            // إضافة أحداث البحث
+            const searchInput = document.getElementById('studentSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    filterStudents(this.value);
+                });
+            }
+        }
+        
+        // تصفية الطلاب حسب البحث
+        function filterStudents(searchTerm) {
+            const rows = document.querySelectorAll('#studentsManagementTable tr');
+            rows.forEach(row => {
+                if (row.classList.contains('empty-table')) return;
+                
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // حذف طالب
+        function deleteStudent(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
+                appData.students.splice(index, 1);
+                updateStats();
+                updateStudentsTable();
+                updateStudentsManagementTable();
+                showNotification('تم حذف الطالب بنجاح', 'success');
+            }
         }
         
         // إضافة طالب جديد
@@ -1265,6 +1429,7 @@
             
             updateStats();
             updateStudentsTable();
+            updateStudentsManagementTable();
             return true;
         }
         
@@ -1309,6 +1474,24 @@
                     item.classList.add('active');
                 }
             });
+        }
+        
+        // تبديل الأقسام
+        function switchSection(sectionId) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // إظهار القسم المطلوب
+            document.getElementById(sectionId).classList.add('active');
+            
+            // تحديث القائمة الجانبية
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelector(`.menu-link[data-section="${sectionId.split('-')[0]}"]`).classList.add('active');
         }
         
         // إظهار إشعار
@@ -1475,8 +1658,21 @@
                 });
             });
             
+            // إعداد أحداث القائمة الجانبية
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    switchSection(`${section}-section`);
+                });
+            });
+            
             // إعداد أحداث لوحة التحكم
             document.getElementById('addStudentBtn').addEventListener('click', function() {
+                document.getElementById('addStudentModal').style.display = 'flex';
+            });
+            
+            document.getElementById('addStudentFromStudentsBtn').addEventListener('click', function() {
                 document.getElementById('addStudentModal').style.display = 'flex';
             });
             
@@ -1579,39 +1775,15 @@
                 }
             });
             
-            // الدعم الفني
+            // زر الدعم الفني (بدون وظيفة)
             document.getElementById('technicalSupportLink').addEventListener('click', function(e) {
                 e.preventDefault();
-                document.getElementById('technicalSupportModal').style.display = 'flex';
+                showNotification('سيتم التواصل مع الدعم الفني قريباً', 'info');
             });
             
             document.getElementById('technicalSupportDashboardLink').addEventListener('click', function(e) {
                 e.preventDefault();
-                document.getElementById('technicalSupportModal').style.display = 'flex';
-            });
-            
-            document.getElementById('supportForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('supportName').value;
-                const phone = document.getElementById('supportPhone').value;
-                const message = document.getElementById('supportMessage').value;
-                
-                if (!name || !phone || !message) {
-                    showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
-                    return;
-                }
-                
-                const phoneRegex = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
-                if (!phoneRegex.test(phone)) {
-                    showNotification('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)', 'error');
-                    return;
-                }
-                
-                // محاكاة إرسال الرسالة
-                showNotification('تم إرسال رسالتك بنجاح! سيتواصل معك الدعم الفني خلال 24 ساعة.', 'success');
-                document.getElementById('technicalSupportModal').style.display = 'none';
-                document.getElementById('supportForm').reset();
+                showNotification('سيتم التواصل مع الدعم الفني قريباً', 'info');
             });
             
             // إعداد المراحل الدراسية
