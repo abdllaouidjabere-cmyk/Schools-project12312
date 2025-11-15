@@ -278,15 +278,89 @@
             display: none;
         }
         
+        /* الشريط العلوي الجديد */
+        .top-navbar {
+            background: white;
+            border-radius: 8px 8px 0 0;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #556B2F;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .nav-item:hover {
+            background: #f5f5f5;
+            color: #556B2F;
+        }
+        
+        .nav-item.active {
+            background: rgba(85, 107, 47, 0.1);
+            color: #556B2F;
+        }
+        
+        .nav-icon {
+            font-size: 18px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #556B2F;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
         /* تنسيقات الواجهة الرئيسية المطابقة للتصميم */
         .dashboard {
             width: 100%;
             max-width: 1200px;
             background: white;
-            border-radius: 8px;
+            border-radius: 0 0 8px 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             border: 1px solid #ddd;
+            border-top: none;
         }
         
         .dashboard-header {
@@ -306,25 +380,6 @@
         .dashboard-subtitle {
             font-size: 18px;
             opacity: 0.9;
-        }
-        
-        .user-actions {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .user-action-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .user-action-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
         }
         
         .dashboard-content {
@@ -464,6 +519,32 @@
             margin-top: 20px;
         }
         
+        @media (max-width: 992px) {
+            .top-navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+            
+            .nav-menu {
+                width: 100%;
+                justify-content: space-between;
+                gap: 10px;
+            }
+            
+            .nav-item {
+                flex-direction: column;
+                gap: 5px;
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
         @media (max-width: 768px) {
             .dashboard-header {
                 flex-direction: column;
@@ -494,6 +575,27 @@
             
             .button-group {
                 flex-direction: column;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-item {
+                min-width: 100px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-item {
+                min-width: 80px;
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+            
+            .nav-icon {
+                font-size: 16px;
             }
         }
     </style>
@@ -586,11 +688,49 @@
             </form>
         </div>
         
+        <!-- الشريط العلوي الجديد -->
+        <div class="top-navbar hidden" id="topNavbar">
+            <div class="nav-logo">
+                <div class="logo-text">النافذة الذكية</div>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active" id="navHome">
+                    <i class="fas fa-bars nav-icon"></i>
+                    <span>الرئيسية</span>
+                </div>
+                <div class="nav-item" id="navStudents">
+                    <i class="fas fa-user-graduate nav-icon"></i>
+                    <span>الطلاب</span>
+                </div>
+                <div class="nav-item" id="navParents">
+                    <i class="fas fa-users nav-icon"></i>
+                    <span>أولياء الأمور</span>
+                </div>
+                <div class="nav-item" id="navCashier">
+                    <i class="fas fa-calculator nav-icon"></i>
+                    <span>الكاشير</span>
+                </div>
+                <div class="nav-item" id="navUsers">
+                    <i class="fas fa-user-shield nav-icon"></i>
+                    <span>المستخدمين</span>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">م</div>
+                <div>
+                    <div style="font-weight: bold;">مدير النظام</div>
+                    <div style="font-size: 12px; color: #666;">admin@smartwallet.com</div>
+                </div>
+            </div>
+        </div>
+        
         <!-- الواجهة الرئيسية المطابقة للتصميم -->
         <div class="dashboard hidden" id="dashboardContainer">
             <div class="dashboard-header">
                 <div>
-                    <h1 class="dashboard-title">النافذة الذكية</h1>
+                    <h1 class="dashboard-title">لوحة التحكم</h1>
                     <p class="dashboard-subtitle">SmartWallet</p>
                 </div>
             </div>
@@ -681,6 +821,14 @@
         const loginFormContainer = document.getElementById('loginFormContainer');
         const changePasswordContainer = document.getElementById('changePasswordContainer');
         const dashboardContainer = document.getElementById('dashboardContainer');
+        const topNavbar = document.getElementById('topNavbar');
+        
+        // عناصر الشريط العلوي
+        const navHome = document.getElementById('navHome');
+        const navStudents = document.getElementById('navStudents');
+        const navParents = document.getElementById('navParents');
+        const navCashier = document.getElementById('navCashier');
+        const navUsers = document.getElementById('navUsers');
         
         // عناصر الواجهة الرئيسية
         const changePasswordBtn = document.getElementById('changePasswordBtn');
@@ -697,7 +845,8 @@
             cashiers: 0,
             parents: 0,
             students: 0,
-            studentsList: []
+            studentsList: [],
+            currentSection: 'home'
         };
         
         // وظائف عامة
@@ -748,12 +897,14 @@
         function showLoginForm() {
             changePasswordContainer.classList.add('hidden');
             dashboardContainer.classList.add('hidden');
+            topNavbar.classList.add('hidden');
             loginFormContainer.classList.remove('hidden');
         }
         
         function showChangePasswordForm() {
             loginFormContainer.classList.add('hidden');
             dashboardContainer.classList.add('hidden');
+            topNavbar.classList.add('hidden');
             changePasswordContainer.classList.remove('hidden');
         }
         
@@ -761,6 +912,7 @@
             loginFormContainer.classList.add('hidden');
             changePasswordContainer.classList.add('hidden');
             dashboardContainer.classList.remove('hidden');
+            topNavbar.classList.remove('hidden');
             updateDashboard();
         }
         
@@ -792,6 +944,33 @@
                         <td colspan="6" class="empty-table">لا توجد بيانات للعرض. قم بإضافة طلاب أولاً.</td>
                     </tr>
                 `;
+            }
+        }
+        
+        // تحديث القسم النشط في الشريط العلوي
+        function updateActiveNavItem() {
+            // إزالة الفئة النشطة من جميع العناصر
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // إضافة الفئة النشطة للعنصر المحدد
+            switch(appData.currentSection) {
+                case 'home':
+                    navHome.classList.add('active');
+                    break;
+                case 'students':
+                    navStudents.classList.add('active');
+                    break;
+                case 'parents':
+                    navParents.classList.add('active');
+                    break;
+                case 'cashier':
+                    navCashier.classList.add('active');
+                    break;
+                case 'users':
+                    navUsers.classList.add('active');
+                    break;
             }
         }
         
@@ -958,6 +1137,37 @@
             appData.studentsList.push(newStudent);
             updateDashboard();
             alert('تم إضافة طالب جديد بنجاح!');
+        });
+        
+        // معالجة النقر على عناصر الشريط العلوي
+        navHome.addEventListener('click', function() {
+            appData.currentSection = 'home';
+            updateActiveNavItem();
+            alert('تم الانتقال إلى القسم الرئيسي');
+        });
+        
+        navStudents.addEventListener('click', function() {
+            appData.currentSection = 'students';
+            updateActiveNavItem();
+            alert('تم الانتقال إلى قسم الطلاب');
+        });
+        
+        navParents.addEventListener('click', function() {
+            appData.currentSection = 'parents';
+            updateActiveNavItem();
+            alert('تم الانتقال إلى قسم أولياء الأمور');
+        });
+        
+        navCashier.addEventListener('click', function() {
+            appData.currentSection = 'cashier';
+            updateActiveNavItem();
+            alert('تم الانتقال إلى قسم الكاشير');
+        });
+        
+        navUsers.addEventListener('click', function() {
+            appData.currentSection = 'users';
+            updateActiveNavItem();
+            alert('تم الانتقال إلى قسم المستخدمين');
         });
     </script>
 </body>
