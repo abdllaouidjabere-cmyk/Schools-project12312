@@ -38,10 +38,35 @@
         /* أنماط صفحة تسجيل الدخول */
         .login-page {
             display: flex;
+            min-height: 100vh;
+        }
+        
+        .login-left {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 20px;
+            background: var(--white);
+        }
+        
+        .login-right {
+            flex: 1;
+            background: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        .login-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 80vh;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
         }
         
         .login-container, .forgot-password-container {
@@ -65,14 +90,14 @@
         
         .welcome-text h1 {
             color: var(--gray-dark);
-            font-size: 26px;
+            font-size: 32px;
             font-weight: 700;
             margin-bottom: 8px;
         }
         
         .welcome-text p {
             color: var(--gray);
-            font-size: 15px;
+            font-size: 16px;
         }
         
         .form-group {
@@ -744,6 +769,14 @@
             .main-content {
                 margin-right: 70px;
             }
+            
+            .login-right {
+                display: none;
+            }
+            
+            .login-left {
+                flex: 1;
+            }
         }
         
         @media (max-width: 768px) {
@@ -784,99 +817,106 @@
 <body>
     <!-- صفحة تسجيل الدخول -->
     <div class="login-page" id="loginPage">
-        <div class="login-container" id="loginContainer">
-            <div class="welcome-text">
-                <h1>مرحباً بك</h1>
-                <p>سجل دخولك هنا</p>
-            </div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="phone">رقم الجوال *</label>
-                    <input type="text" id="phone" placeholder="اكتب رقم الجوال هنا" required>
-                    <div class="input-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
+        <div class="login-left">
+            <div class="login-container" id="loginContainer">
+                <div class="welcome-text">
+                    <h1>مرحباً بك</h1>
+                    <p>سجل دخولك هنا</p>
                 </div>
                 
-                <div class="form-group">
-                    <label for="password">كلمة السر *</label>
-                    <input type="password" id="password" placeholder="كلمة السر" required>
-                    <div class="password-toggle" id="passwordToggle">
-                        <i class="far fa-eye-slash" id="passwordIcon"></i>
-                    </div>
-                </div>
-                
-                <div class="forgot-password">
-                    <a id="forgotPasswordLink">نسيت كلمة السر؟</a>
-                </div>
-                
-                <button type="submit" class="login-button">تسجيل دخول</button>
-            </form>
-            
-            <div class="help-text">
-                <p>تواجه مشكلة في الدخول؟ <a href="#" id="technicalSupportLink">الدعم الفني</a></p>
-            </div>
-        </div>
-        
-        <!-- واجهة نسيت كلمة المرور -->
-        <div class="forgot-password-container" id="forgotPasswordContainer">
-            <div class="welcome-text">
-                <h1>تغيير كلمة المرور</h1>
-                <p>أدخل رقم جوالك لتغيير كلمة المرور</p>
-            </div>
-            
-            <!-- مؤشر الخطوات -->
-            <div class="step-indicator">
-                <div class="step-item active" data-step="1">
-                    <div class="step-number">1</div>
-                    <div class="step-label">رقم الجوال</div>
-                </div>
-                <div class="step-item" data-step="2">
-                    <div class="step-number">2</div>
-                    <div class="step-label">كلمة المرور</div>
-                </div>
-            </div>
-            
-            <!-- الخطوة 1: إدخال رقم الجوال -->
-            <div class="step active" id="step1">
-                <form id="phoneForm">
+                <form id="loginForm">
                     <div class="form-group">
-                        <label for="resetPhone">رقم الجوال *</label>
-                        <input type="text" id="resetPhone" placeholder="اكتب رقم الجوال هنا" required>
+                        <label for="phone">رقم الجوال *</label>
+                        <input type="text" id="phone" placeholder="اكتب رقم الجوال هنا" required>
                         <div class="input-icon">
                             <i class="fas fa-mobile-alt"></i>
                         </div>
                     </div>
                     
-                    <button type="submit" class="send-code-button">التالي</button>
-                    <button type="button" class="cancel-button" id="cancelChangePassword">إلغاء</button>
+                    <div class="form-group">
+                        <label for="password">كلمة السر *</label>
+                        <input type="password" id="password" placeholder="كلمة السر" required>
+                        <div class="password-toggle" id="passwordToggle">
+                            <i class="far fa-eye-slash" id="passwordIcon"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="forgot-password">
+                        <a id="forgotPasswordLink">نسيت كلمة السر؟</a>
+                    </div>
+                    
+                    <button type="submit" class="login-button">تسجيل دخول</button>
                 </form>
+                
+                <div class="help-text">
+                    <p>تواجه مشكلة في الدخول؟ <a href="#" id="technicalSupportLink">الدعم الفني</a></p>
+                </div>
             </div>
             
-            <!-- الخطوة 2: إدخال كلمة المرور الجديدة -->
-            <div class="step" id="step2">
-                <form id="changePasswordForm">
-                    <div class="form-group">
-                        <label for="newPassword">كلمة المرور الجديدة *</label>
-                        <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" required>
-                        <div class="password-toggle" id="newPasswordToggle">
-                            <i class="far fa-eye-slash" id="newPasswordIcon"></i>
-                        </div>
+            <!-- واجهة نسيت كلمة المرور -->
+            <div class="forgot-password-container" id="forgotPasswordContainer">
+                <div class="welcome-text">
+                    <h1>تغيير كلمة المرور</h1>
+                    <p>أدخل رقم جوالك لتغيير كلمة المرور</p>
+                </div>
+                
+                <!-- مؤشر الخطوات -->
+                <div class="step-indicator">
+                    <div class="step-item active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">رقم الجوال</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="confirmPassword">تأكيد كلمة المرور الجديدة *</label>
-                        <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة" required>
-                        <div class="password-toggle" id="confirmPasswordToggle">
-                            <i class="far fa-eye-slash" id="confirmPasswordIcon"></i>
-                        </div>
+                    <div class="step-item" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">كلمة المرور</div>
                     </div>
-                    
-                    <button type="submit" class="change-password-button">تغيير كلمة المرور</button>
-                    <button type="button" class="cancel-button back-step" data-step="1">رجوع</button>
-                </form>
+                </div>
+                
+                <!-- الخطوة 1: إدخال رقم الجوال -->
+                <div class="step active" id="step1">
+                    <form id="phoneForm">
+                        <div class="form-group">
+                            <label for="resetPhone">رقم الجوال *</label>
+                            <input type="text" id="resetPhone" placeholder="اكتب رقم الجوال هنا" required>
+                            <div class="input-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="send-code-button">التالي</button>
+                        <button type="button" class="cancel-button" id="cancelChangePassword">إلغاء</button>
+                    </form>
+                </div>
+                
+                <!-- الخطوة 2: إدخال كلمة المرور الجديدة -->
+                <div class="step" id="step2">
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label for="newPassword">كلمة المرور الجديدة *</label>
+                            <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" required>
+                            <div class="password-toggle" id="newPasswordToggle">
+                                <i class="far fa-eye-slash" id="newPasswordIcon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">تأكيد كلمة المرور الجديدة *</label>
+                            <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة" required>
+                            <div class="password-toggle" id="confirmPasswordToggle">
+                                <i class="far fa-eye-slash" id="confirmPasswordIcon"></i>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="change-password-button">تغيير كلمة المرور</button>
+                        <button type="button" class="cancel-button back-step" data-step="1">رجوع</button>
+                    </form>
+                </div>
             </div>
+        </div>
+        
+        <div class="login-right">
+            <!-- الصورة من المجلد الحالي -->
+            <img src="photo.png" alt="صورة تسجيل الدخول" class="login-image">
         </div>
     </div>
 
@@ -1031,19 +1071,47 @@
                 </div>
             </div>
             
-            <!-- أقسام أخرى يمكن إضافتها لاحقًا -->
+            <!-- قسم أولياء الأمور -->
             <div class="content-section" id="guardians-section">
                 <div class="header">
                     <div>
                         <h1>إدارة أولياء الأمور</h1>
                         <p>عرض وإدارة جميع أولياء الأمور في النظام</p>
                     </div>
+                    <div class="user-info">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--olive); display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>مدير النظام</span>
+                    </div>
                 </div>
-                <div class="empty-table">
-                    <p>سيتم إضافة محتوى أولياء الأمور قريباً</p>
+                
+                <!-- جدول أولياء الأمور -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>قائمة أولياء الأمور</h3>
+                        <div>
+                            <input type="text" id="guardianSearch" placeholder="بحث عن ولي أمر..." style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 4px; width: 250px;">
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الإجراء</th>
+                                <th>رقم الهاتف</th>
+                                <th>إجمالي الرصيد</th>
+                                <th>اسم ولي الأمر</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guardiansTable">
+                            <!-- سيتم ملؤها بالبيانات من JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
+            <!-- أقسام أخرى يمكن إضافتها لاحقًا -->
             <div class="content-section" id="cashiers-section">
                 <div class="header">
                     <div>
@@ -1187,7 +1255,7 @@
                             </div>
                             <div>
                                 <label for="cashierPhone" class="required">رقم الجوال</label>
-                                <input type="text" id="cashierPhone" placeholder="أدخل رقم الجوال" required>
+                                <input type="text" id="cashيرPhone" placeholder="أدخل رقم الجوال" required>
                             </div>
                         </div>
                         <div class="form-row">
@@ -1282,6 +1350,7 @@
             updateStats();
             updateStudentsTable();
             updateStudentsManagementTable();
+            updateGuardiansTable();
         }
         
         // تحديث الإحصائيات
@@ -1364,9 +1433,74 @@
             }
         }
         
+        // تحديث جدول أولياء الأمور
+        function updateGuardiansTable() {
+            const guardiansTable = document.getElementById('guardiansTable');
+            if (appData.guardians.length === 0) {
+                guardiansTable.innerHTML = '<tr class="empty-table"><td colspan="4">لا توجد بيانات للعرض</td></tr>';
+                return;
+            }
+            
+            let tableHTML = '';
+            appData.guardians.forEach((guardian, index) => {
+                // حساب إجمالي الرصيد للطلاب المرتبطين بهذا ولي الأمر
+                const totalBalance = appData.students
+                    .filter(student => student.guardian.id === guardian.id)
+                    .reduce((total, student) => total + student.balance, 0);
+                
+                tableHTML += `
+                    <tr>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn delete-btn" data-index="${index}">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        </td>
+                        <td>${guardian.phone}</td>
+                        <td>${totalBalance} ريال</td>
+                        <td>${guardian.firstName} ${guardian.secondName} ${guardian.lastName}</td>
+                    </tr>
+                `;
+            });
+            
+            guardiansTable.innerHTML = tableHTML;
+            
+            // إضافة أحداث الحذف لأولياء الأمور
+            document.querySelectorAll('#guardiansTable .delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    deleteGuardian(index);
+                });
+            });
+            
+            // إضافة أحداث البحث لأولياء الأمور
+            const searchInput = document.getElementById('guardianSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    filterGuardians(this.value);
+                });
+            }
+        }
+        
         // تصفية الطلاب حسب البحث
         function filterStudents(searchTerm) {
             const rows = document.querySelectorAll('#studentsManagementTable tr');
+            rows.forEach(row => {
+                if (row.classList.contains('empty-table')) return;
+                
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // تصفية أولياء الأمور حسب البحث
+        function filterGuardians(searchTerm) {
+            const rows = document.querySelectorAll('#guardiansTable tr');
             rows.forEach(row => {
                 if (row.classList.contains('empty-table')) return;
                 
@@ -1386,7 +1520,27 @@
                 updateStats();
                 updateStudentsTable();
                 updateStudentsManagementTable();
+                updateGuardiansTable();
                 showNotification('تم حذف الطالب بنجاح', 'success');
+            }
+        }
+        
+        // حذف ولي أمر
+        function deleteGuardian(index) {
+            // التحقق مما إذا كان ولي الأمر مرتبطاً بأي طالب
+            const guardian = appData.guardians[index];
+            const hasStudents = appData.students.some(student => student.guardian.id === guardian.id);
+            
+            if (hasStudents) {
+                showNotification('لا يمكن حذف ولي الأمر لأنه مرتبط بطلاب في النظام', 'error');
+                return;
+            }
+            
+            if (confirm('هل أنت متأكد من حذف ولي الأمر هذا؟')) {
+                appData.guardians.splice(index, 1);
+                updateStats();
+                updateGuardiansTable();
+                showNotification('تم حذف ولي الأمر بنجاح', 'success');
             }
         }
         
@@ -1430,6 +1584,7 @@
             updateStats();
             updateStudentsTable();
             updateStudentsManagementTable();
+            updateGuardiansTable();
             return true;
         }
         
