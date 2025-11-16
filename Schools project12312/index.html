@@ -113,9 +113,9 @@
             font-size: 14px;
         }
         
-        label.required::after {
+        .required-field::after {
             content: " (مطلوب)";
-            color: var(--error);
+            color: var(--olive);
             font-weight: normal;
         }
         
@@ -126,7 +126,7 @@
         select,
         textarea {
             width: 100%;
-            padding: 14px 45px 14px 16px;
+            padding: 14px 16px;
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 15px;
@@ -827,7 +827,7 @@
                 
                 <form id="loginForm">
                     <div class="form-group">
-                        <label for="phone" class="required">رقم الجوال</label>
+                        <label for="phone" class="required-field">رقم الجوال</label>
                         <input type="text" id="phone" placeholder="اكتب رقم الجوال هنا" required>
                         <div class="input-icon">
                             <i class="fas fa-mobile-alt"></i>
@@ -835,7 +835,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="password" class="required">كلمة السر</label>
+                        <label for="password" class="required-field">كلمة السر</label>
                         <input type="password" id="password" placeholder="كلمة السر" required>
                         <div class="password-toggle" id="passwordToggle">
                             <i class="far fa-eye-slash" id="passwordIcon"></i>
@@ -877,7 +877,7 @@
                 <div class="step active" id="step1">
                     <form id="phoneForm">
                         <div class="form-group">
-                            <label for="resetPhone" class="required">رقم الجوال</label>
+                            <label for="resetPhone" class="required-field">رقم الجوال</label>
                             <input type="text" id="resetPhone" placeholder="اكتب رقم الجوال هنا" required>
                             <div class="input-icon">
                                 <i class="fas fa-mobile-alt"></i>
@@ -893,7 +893,7 @@
                 <div class="step" id="step2">
                     <form id="changePasswordForm">
                         <div class="form-group">
-                            <label for="newPassword" class="required">كلمة المرور الجديدة</label>
+                            <label for="newPassword" class="required-field">كلمة المرور الجديدة</label>
                             <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" required>
                             <div class="password-toggle" id="newPasswordToggle">
                                 <i class="far fa-eye-slash" id="newPasswordIcon"></i>
@@ -901,7 +901,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="confirmPassword" class="required">تأكيد كلمة المرور الجديدة</label>
+                            <label for="confirmPassword" class="required-field">تأكيد كلمة المرور الجديدة</label>
                             <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة" required>
                             <div class="password-toggle" id="confirmPasswordToggle">
                                 <i class="far fa-eye-slash" id="confirmPasswordIcon"></i>
@@ -1109,28 +1109,99 @@
                 </div>
             </div>
             
-            <!-- أقسام أخرى يمكن إضافتها لاحقًا -->
+            <!-- قسم الكاشير -->
             <div class="content-section" id="cashiers-section">
                 <div class="header">
                     <div>
-                        <h1>إدارة الكاشير</h1>
-                        <p>عرض وإدارة جميع الكاشير في النظام</p>
+                        <h1>الكاشير</h1>
+                        <p>إدارة الكاشير في النظام</p>
+                    </div>
+                    <div class="user-info">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--olive); display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>مدير النظام</span>
                     </div>
                 </div>
-                <div class="empty-table">
-                    <p>سيتم إضافة محتوى الكاشير قريباً</p>
+                
+                <!-- أزرار الإجراءات -->
+                <div class="actions">
+                    <button class="btn btn-primary" id="addCashierFromCashiersBtn">
+                        <i class="fas fa-plus"></i> إضافة كاشير جديد
+                    </button>
+                </div>
+                
+                <!-- شريط البحث -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>البحث</h3>
+                        <div>
+                            <input type="text" id="cashierSearch" placeholder="ابحث عن كاشير..." style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 4px; width: 250px;">
+                        </div>
+                    </div>
+                    
+                    <!-- جدول الكاشير -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم الكاشير</th>
+                                <th>رقم الهاتف</th>
+                                <th>المرحلة الدراسية</th>
+                                <th>الجنس</th>
+                                <th>الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cashiersTable">
+                            <!-- سيتم ملؤها بالبيانات من JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
             
+            <!-- قسم المستخدمين -->
             <div class="content-section" id="users-section">
                 <div class="header">
                     <div>
-                        <h1>إدارة المستخدمين</h1>
-                        <p>عرض وإدارة جميع المستخدمين في النظام</p>
+                        <h1>المستخدمين</h1>
+                        <p>إدارة المستخدمين في النظام</p>
+                    </div>
+                    <div class="user-info">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--olive); display: flex; align-items: center; justify-content: center; color: white; margin-left: 10px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>مدير النظام</span>
                     </div>
                 </div>
-                <div class="empty-table">
-                    <p>سيتم إضافة محتوى المستخدمين قريباً</p>
+                
+                <!-- أزرار الإجراءات -->
+                <div class="actions">
+                    <button class="btn btn-primary" id="addUserBtn">
+                        <i class="fas fa-plus"></i> إضافة مستخدم جديد
+                    </button>
+                </div>
+                
+                <!-- جدول المستخدمين -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>قائمة المستخدمين</h3>
+                        <div>
+                            <input type="text" id="userSearch" placeholder="بحث عن مستخدم..." style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 4px; width: 250px;">
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>المنصب</th>
+                                <th>رقم الهاتف</th>
+                                <th>الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <!-- سيتم ملؤها بالبيانات من JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1149,27 +1220,27 @@
                         <h3 style="color: var(--olive); margin-bottom: 15px;">بيانات الطالب</h3>
                         <div class="form-row">
                             <div>
-                                <label for="firstName" class="required">الاسم الأول</label>
+                                <label for="firstName" class="required-field">الاسم الأول</label>
                                 <input type="text" id="firstName" required>
                             </div>
                             <div>
-                                <label for="secondName" class="required">اسم الأب</label>
+                                <label for="secondName" class="required-field">اسم الأب</label>
                                 <input type="text" id="secondName" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="thirdName" class="required">اسم الجد</label>
+                                <label for="thirdName" class="required-field">اسم الجد</label>
                                 <input type="text" id="thirdName" required>
                             </div>
                             <div>
-                                <label for="lastName" class="required">الاسم الأخير</label>
+                                <label for="lastName" class="required-field">الاسم الأخير</label>
                                 <input type="text" id="lastName" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="educationLevel" class="required">المرحلة الدراسية</label>
+                                <label for="educationLevel" class="required-field">المرحلة الدراسية</label>
                                 <select id="educationLevel" required>
                                     <option value="">اختر المرحلة</option>
                                     <option value="ابتدائي">ابتدائي</option>
@@ -1178,7 +1249,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="class" class="required">الصف</label>
+                                <label for="class" class="required-field">الصف</label>
                                 <select id="class" required>
                                     <option value="">اختر الصف</option>
                                 </select>
@@ -1190,27 +1261,27 @@
                         <h3 style="color: var(--olive); margin-bottom: 15px;">بيانات ولي الأمر</h3>
                         <div class="form-row">
                             <div>
-                                <label for="guardianFirstName" class="required">الاسم الأول</label>
+                                <label for="guardianFirstName" class="required-field">الاسم الأول</label>
                                 <input type="text" id="guardianFirstName" required>
                             </div>
                             <div>
-                                <label for="guardianSecondName" class="required">الاسم الثاني</label>
+                                <label for="guardianSecondName" class="required-field">الاسم الثاني</label>
                                 <input type="text" id="guardianSecondName" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="guardianLastName" class="required">الاسم الأخير</label>
+                                <label for="guardianLastName" class="required-field">الاسم الأخير</label>
                                 <input type="text" id="guardianLastName" required>
                             </div>
                             <div>
-                                <label for="guardianPhone" class="required">رقم الجوال</label>
+                                <label for="guardianPhone" class="required-field">رقم الجوال</label>
                                 <input type="text" id="guardianPhone" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="guardianPassword" class="required">كلمة السر</label>
+                                <label for="guardianPassword" class="required-field">كلمة السر</label>
                                 <input type="password" id="guardianPassword" required>
                             </div>
                         </div>
@@ -1238,34 +1309,31 @@
                         <h3 style="color: var(--olive); margin-bottom: 15px;">البيانات الأساسية</h3>
                         <div class="form-row">
                             <div>
-                                <label for="cashierFirstName" class="required">الاسم الأول</label>
+                                <label for="cashierFirstName" class="required-field">الاسم الأول</label>
                                 <input type="text" id="cashierFirstName" placeholder="أدخل الاسم الأول" required>
                             </div>
                             <div>
-                                <label for="cashierSecondName" class="required">الاسم الثاني</label>
+                                <label for="cashierSecondName" class="required-field">الاسم الثاني</label>
                                 <input type="text" id="cashierSecondName" placeholder="أدخل الاسم الثاني" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="cashierLastName" class="required">الاسم الأخير</label>
+                                <label for="cashierLastName" class="required-field">الاسم الأخير</label>
                                 <input type="text" id="cashierLastName" placeholder="أدخل الاسم الأخير" required>
                             </div>
                             <div>
-                                <label for="cashierPhone" class="required">رقم الجوال</label>
+                                <label for="cashierPhone" class="required-field">رقم الجوال</label>
                                 <input type="text" id="cashierPhone" placeholder="أدخل رقم الجوال" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="cashierPassword" class="required">كلمة السر</label>
+                                <label for="cashierPassword" class="required-field">كلمة السر</label>
                                 <input type="password" id="cashierPassword" placeholder="أدخل كلمة السر" required>
-                                <div class="password-toggle" id="cashierPasswordToggle">
-                                    <i class="far fa-eye-slash" id="cashierPasswordIcon"></i>
-                                </div>
                             </div>
                             <div>
-                                <label for="cashierEducationLevel" class="required">المرحلة الدراسية</label>
+                                <label for="cashierEducationLevel" class="required-field">المرحلة الدراسية</label>
                                 <select id="cashierEducationLevel" required>
                                     <option value="">اختر المرحلة</option>
                                     <option value="ابتدائي">ابتدائي</option>
@@ -1276,7 +1344,7 @@
                         </div>
                         <div class="form-row">
                             <div>
-                                <label for="cashierGender" class="required">الجنس</label>
+                                <label for="cashierGender" class="required-field">الجنس</label>
                                 <select id="cashierGender" required>
                                     <option value="">اختر الجنس</option>
                                     <option value="ذكر">ذكر</option>
@@ -1295,6 +1363,58 @@
         </div>
     </div>
     
+    <!-- نافذة إضافة مستخدم جديد -->
+    <div class="modal" id="addUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إضافة مستخدم جديد</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <h3 style="color: var(--olive); margin-bottom: 15px;">البيانات الأساسية</h3>
+                        <div class="form-row">
+                            <div>
+                                <label for="userFirstName" class="required-field">الاسم الأول</label>
+                                <input type="text" id="userFirstName" placeholder="أدخل الاسم الأول" required>
+                            </div>
+                            <div>
+                                <label for="userSecondName" class="required-field">الاسم الثاني</label>
+                                <input type="text" id="userSecondName" placeholder="أدخل الاسم الثاني" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="userLastName" class="required-field">الاسم الأخير</label>
+                                <input type="text" id="userLastName" placeholder="أدخل الاسم الأخير" required>
+                            </div>
+                            <div>
+                                <label for="userPosition" class="required-field">المنصب</label>
+                                <input type="text" id="userPosition" placeholder="أدخل المنصب" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label for="userPhone" class="required-field">رقم الجوال</label>
+                                <input type="text" id="userPhone" placeholder="أدخل رقم الجوال" required>
+                            </div>
+                            <div>
+                                <label for="userPassword" class="required-field">كلمة السر</label>
+                                <input type="password" id="userPassword" placeholder="أدخل كلمة السر" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">إضافة المستخدم</button>
+                        <button type="button" class="btn btn-cancel close-modal">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <!-- نافذة النجاح -->
     <div class="modal" id="successModal">
         <div class="modal-content">
@@ -1302,8 +1422,7 @@
                 <div class="success-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <h2 id="successTitle">تم إضافة طالب جديد بنجاح!</h2>
-                <p id="successMessage">تمت إضافة الطالب إلى النظام بنجاح</p>
+                <h2 id="successTitle">تم إضافة مستخدم جديد بنجاح!</h2>
                 <button class="btn btn-primary" id="successOkBtn">التالي</button>
             </div>
         </div>
@@ -1318,9 +1437,11 @@
             students: [],
             guardians: [],
             cashiers: [],
+            users: [],
             maxStudents: 5000,
             maxGuardians: 2000,
             maxCashiers: 30,
+            maxUsers: 100,
             resetCode: null,
             resetPhone: null
         };
@@ -1349,6 +1470,8 @@
             updateStudentsTable();
             updateStudentsManagementTable();
             updateGuardiansTable();
+            updateCashiersTable();
+            updateUsersTable();
         }
         
         // تحديث الإحصائيات
@@ -1481,6 +1604,100 @@
             }
         }
         
+        // تحديث جدول الكاشير
+        function updateCashiersTable() {
+            const cashiersTable = document.getElementById('cashiersTable');
+            if (appData.cashiers.length === 0) {
+                cashiersTable.innerHTML = '<tr class="empty-table"><td colspan="5">لا توجد بيانات للعرض</td></tr>';
+                return;
+            }
+            
+            let tableHTML = '';
+            appData.cashiers.forEach((cashier, index) => {
+                // تحديد نص الجنس بناءً على القيمة
+                const genderText = cashier.gender === 'ذكر' ? 'بني' : 'بنات';
+                
+                tableHTML += `
+                    <tr>
+                        <td>${cashier.firstName} ${cashier.secondName} ${cashier.lastName}</td>
+                        <td>${cashier.phone}</td>
+                        <td>${cashier.educationLevel}</td>
+                        <td>${genderText}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn delete-btn" data-index="${index}">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            cashiersTable.innerHTML = tableHTML;
+            
+            // إضافة أحداث الحذف للكاشير
+            document.querySelectorAll('#cashiersTable .delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    deleteCashier(index);
+                });
+            });
+            
+            // إضافة أحداث البحث للكاشير
+            const searchInput = document.getElementById('cashierSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    filterCashiers(this.value);
+                });
+            }
+        }
+        
+        // تحديث جدول المستخدمين
+        function updateUsersTable() {
+            const usersTable = document.getElementById('usersTable');
+            if (appData.users.length === 0) {
+                usersTable.innerHTML = '<tr class="empty-table"><td colspan="4">لا توجد بيانات للعرض</td></tr>';
+                return;
+            }
+            
+            let tableHTML = '';
+            appData.users.forEach((user, index) => {
+                tableHTML += `
+                    <tr>
+                        <td>${user.firstName} ${user.secondName} ${user.lastName}</td>
+                        <td>${user.position}</td>
+                        <td>${user.phone}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn delete-btn" data-index="${index}">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            usersTable.innerHTML = tableHTML;
+            
+            // إضافة أحداث الحذف للمستخدمين
+            document.querySelectorAll('#usersTable .delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    deleteUser(index);
+                });
+            });
+            
+            // إضافة أحداث البحث للمستخدمين
+            const searchInput = document.getElementById('userSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    filterUsers(this.value);
+                });
+            }
+        }
+        
         // تصفية الطلاب حسب البحث
         function filterStudents(searchTerm) {
             const rows = document.querySelectorAll('#studentsManagementTable tr');
@@ -1499,6 +1716,36 @@
         // تصفية أولياء الأمور حسب البحث
         function filterGuardians(searchTerm) {
             const rows = document.querySelectorAll('#guardiansTable tr');
+            rows.forEach(row => {
+                if (row.classList.contains('empty-table')) return;
+                
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // تصفية الكاشير حسب البحث
+        function filterCashiers(searchTerm) {
+            const rows = document.querySelectorAll('#cashiersTable tr');
+            rows.forEach(row => {
+                if (row.classList.contains('empty-table')) return;
+                
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // تصفية المستخدمين حسب البحث
+        function filterUsers(searchTerm) {
+            const rows = document.querySelectorAll('#usersTable tr');
             rows.forEach(row => {
                 if (row.classList.contains('empty-table')) return;
                 
@@ -1539,6 +1786,25 @@
                 updateStats();
                 updateGuardiansTable();
                 showNotification('تم حذف ولي الأمر بنجاح', 'success');
+            }
+        }
+        
+        // حذف كاشير
+        function deleteCashier(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الكاشير؟')) {
+                appData.cashiers.splice(index, 1);
+                updateStats();
+                updateCashiersTable();
+                showNotification('تم حذف الكاشير بنجاح', 'success');
+            }
+        }
+        
+        // حذف مستخدم
+        function deleteUser(index) {
+            if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+                appData.users.splice(index, 1);
+                updateUsersTable();
+                showNotification('تم حذف المستخدم بنجاح', 'success');
             }
         }
         
@@ -1607,6 +1873,30 @@
             appData.cashiers.push(cashier);
             
             updateStats();
+            updateCashiersTable();
+            return true;
+        }
+        
+        // إضافة مستخدم جديد
+        function addUser(userData) {
+            if (appData.users.length >= appData.maxUsers) {
+                showNotification('لا يمكن إضافة المزيد من المستخدمين. الحد الأقصى هو ' + appData.maxUsers + ' مستخدم', 'error');
+                return false;
+            }
+            
+            const user = {
+                id: Date.now(),
+                firstName: userData.firstName,
+                secondName: userData.secondName,
+                lastName: userData.lastName,
+                position: userData.position,
+                phone: userData.phone,
+                password: userData.password
+            };
+            
+            appData.users.push(user);
+            
+            updateUsersTable();
             return true;
         }
         
@@ -1794,8 +2084,8 @@
                 });
             });
             
-            // إعداد إظهار/إخفاء كلمة السر
-            document.querySelectorAll('.password-toggle').forEach(toggle => {
+            // إعداد إظهار/إخفاء كلمة السر (لصفحة تسجيل الدخول فقط)
+            document.querySelectorAll('#passwordToggle, #newPasswordToggle, #confirmPasswordToggle').forEach(toggle => {
                 toggle.addEventListener('click', function() {
                     const input = this.parentElement.querySelector('input');
                     const icon = this.querySelector('i');
@@ -1831,6 +2121,16 @@
             
             document.getElementById('addCashierBtn').addEventListener('click', function() {
                 document.getElementById('addCashierModal').style.display = 'flex';
+            });
+            
+            // زر إضافة كاشير من قسم الكاشير
+            document.getElementById('addCashierFromCashiersBtn').addEventListener('click', function() {
+                document.getElementById('addCashierModal').style.display = 'flex';
+            });
+            
+            // زر إضافة مستخدم جديد
+            document.getElementById('addUserBtn').addEventListener('click', function() {
+                document.getElementById('addUserModal').style.display = 'flex';
             });
             
             document.getElementById('addStudentForm').addEventListener('submit', function(e) {
@@ -1912,6 +2212,44 @@
                     document.getElementById('successModal').style.display = 'flex';
                     document.getElementById('addCashierForm').reset();
                     showNotification('تـم إضافة كاشير جديد بنجاح!', 'success');
+                }
+            });
+            
+            document.getElementById('addUserForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    firstName: document.getElementById('userFirstName').value,
+                    secondName: document.getElementById('userSecondName').value,
+                    lastName: document.getElementById('userLastName').value,
+                    position: document.getElementById('userPosition').value,
+                    phone: document.getElementById('userPhone').value,
+                    password: document.getElementById('userPassword').value
+                };
+                
+                if (!formData.firstName || !formData.secondName || !formData.lastName || 
+                    !formData.position || !formData.phone || !formData.password) {
+                    showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
+                
+                const phoneRegex = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
+                if (!phoneRegex.test(formData.phone)) {
+                    showNotification('يرجى إدخال رقم جوال صحيح (مثال: 0512345678)', 'error');
+                    return;
+                }
+                
+                if (formData.password.length < 6) {
+                    showNotification('كلمة السر يجب أن تكون 6 أحرف على الأقل', 'error');
+                    return;
+                }
+                
+                if (addUser(formData)) {
+                    document.getElementById('addUserModal').style.display = 'none';
+                    document.getElementById('successTitle').textContent = 'تم إضافة مستخدم جديد بنجاح!';
+                    document.getElementById('successModal').style.display = 'flex';
+                    document.getElementById('addUserForm').reset();
+                    showNotification('تم إضافة مستخدم جديد بنجاح!', 'success');
                 }
             });
             
