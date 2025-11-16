@@ -114,8 +114,9 @@
         }
         
         label.required::after {
-            content: " *";
+            content: " (مطلوب)";
             color: var(--error);
+            font-weight: normal;
         }
         
         input[type="text"],
@@ -826,7 +827,7 @@
                 
                 <form id="loginForm">
                     <div class="form-group">
-                        <label for="phone">رقم الجوال *</label>
+                        <label for="phone" class="required">رقم الجوال</label>
                         <input type="text" id="phone" placeholder="اكتب رقم الجوال هنا" required>
                         <div class="input-icon">
                             <i class="fas fa-mobile-alt"></i>
@@ -834,7 +835,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="password">كلمة السر *</label>
+                        <label for="password" class="required">كلمة السر</label>
                         <input type="password" id="password" placeholder="كلمة السر" required>
                         <div class="password-toggle" id="passwordToggle">
                             <i class="far fa-eye-slash" id="passwordIcon"></i>
@@ -876,7 +877,7 @@
                 <div class="step active" id="step1">
                     <form id="phoneForm">
                         <div class="form-group">
-                            <label for="resetPhone">رقم الجوال *</label>
+                            <label for="resetPhone" class="required">رقم الجوال</label>
                             <input type="text" id="resetPhone" placeholder="اكتب رقم الجوال هنا" required>
                             <div class="input-icon">
                                 <i class="fas fa-mobile-alt"></i>
@@ -892,7 +893,7 @@
                 <div class="step" id="step2">
                     <form id="changePasswordForm">
                         <div class="form-group">
-                            <label for="newPassword">كلمة المرور الجديدة *</label>
+                            <label for="newPassword" class="required">كلمة المرور الجديدة</label>
                             <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة" required>
                             <div class="password-toggle" id="newPasswordToggle">
                                 <i class="far fa-eye-slash" id="newPasswordIcon"></i>
@@ -900,7 +901,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="confirmPassword">تأكيد كلمة المرور الجديدة *</label>
+                            <label for="confirmPassword" class="required">تأكيد كلمة المرور الجديدة</label>
                             <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة" required>
                             <div class="password-toggle" id="confirmPasswordToggle">
                                 <i class="far fa-eye-slash" id="confirmPasswordIcon"></i>
@@ -969,19 +970,16 @@
                     <div class="card">
                         <h3>إجمالي الطلاب</h3>
                         <div class="number" id="studentCount">0</div>
-                        <div class="max">الحد الأقصى: 5000 طالب</div>
                     </div>
                     
                     <div class="card">
                         <h3>إجمالي أولياء الأمور</h3>
                         <div class="number" id="guardianCount">0</div>
-                        <div class="max">الحد الأقصى: 2000 ولي أمر</div>
                     </div>
                     
                     <div class="card">
                         <h3>إجمالي الكاشير</h3>
                         <div class="number" id="cashierCount">0</div>
-                        <div class="max">الحد الأقصى: 30 كاشير</div>
                     </div>
                 </div>
                 
@@ -1098,10 +1096,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>الإجراء</th>
-                                <th>رقم الهاتف</th>
-                                <th>إجمالي الرصيد</th>
                                 <th>اسم ولي الأمر</th>
+                                <th>إجمالي الرصيد</th>
+                                <th>رقم الهاتف</th>
+                                <th>الإجراء</th>
                             </tr>
                         </thead>
                         <tbody id="guardiansTable">
@@ -1255,7 +1253,7 @@
                             </div>
                             <div>
                                 <label for="cashierPhone" class="required">رقم الجوال</label>
-                                <input type="text" id="cashيرPhone" placeholder="أدخل رقم الجوال" required>
+                                <input type="text" id="cashierPhone" placeholder="أدخل رقم الجوال" required>
                             </div>
                         </div>
                         <div class="form-row">
@@ -1450,6 +1448,9 @@
                 
                 tableHTML += `
                     <tr>
+                        <td>${guardian.firstName} ${guardian.secondName} ${guardian.lastName}</td>
+                        <td>${totalBalance} ريال</td>
+                        <td>${guardian.phone}</td>
                         <td>
                             <div class="action-buttons">
                                 <button class="action-btn delete-btn" data-index="${index}">
@@ -1457,9 +1458,6 @@
                                 </button>
                             </div>
                         </td>
-                        <td>${guardian.phone}</td>
-                        <td>${totalBalance} ريال</td>
-                        <td>${guardian.firstName} ${guardian.secondName} ${guardian.lastName}</td>
                     </tr>
                 `;
             });
