@@ -26,6 +26,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .main-container {
@@ -35,8 +36,47 @@
             height: 650px;
             display: flex;
             border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
             overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* --- تأثيرات الانتقالات --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
         }
 
         /* --- القسم الأيسر (النموذج) --- */
@@ -48,14 +88,28 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(95, 111, 70, 0.03) 0%, rgba(95, 111, 70, 0) 100%);
+            z-index: 0;
         }
 
         .form-header h1 {
-            color: #5f6f46; /* اللون الزيتي */
+            color: #5f6f46;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 10px;
             letter-spacing: -1px;
+            animation: slideInLeft 0.6s ease-out 0.2s both;
         }
 
         .form-header p {
@@ -63,6 +117,7 @@
             font-size: 1.1rem;
             margin-bottom: 40px;
             font-weight: 600;
+            animation: slideInLeft 0.6s ease-out 0.3s both;
         }
 
         .input-group {
@@ -70,6 +125,7 @@
             max-width: 400px;
             margin-bottom: 20px;
             text-align: right;
+            animation: slideInLeft 0.6s ease-out 0.4s both;
         }
 
         .input-group label {
@@ -78,6 +134,7 @@
             margin-bottom: 8px;
             font-weight: 600;
             font-size: 0.95rem;
+            transition: color 0.3s;
         }
 
         .input-wrapper {
@@ -89,15 +146,17 @@
             padding: 15px 45px 15px 15px;
             background-color: #fcfcfc;
             border: 1px solid #eee;
-            border-radius: 10px;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .input-wrapper input:focus {
             border-color: #5f6f46;
             background-color: #fff;
+            box-shadow: 0 5px 15px rgba(95, 111, 70, 0.1);
+            transform: translateY(-2px);
         }
 
         .input-wrapper i {
@@ -106,6 +165,12 @@
             top: 50%;
             transform: translateY(-50%);
             color: #ccc;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper input:focus + i {
+            color: #5f6f46;
+            transform: translateY(-50%) scale(1.1);
         }
 
         .forgot-pass {
@@ -113,6 +178,7 @@
             max-width: 400px;
             text-align: left;
             margin-bottom: 30px;
+            animation: slideInLeft 0.6s ease-out 0.5s both;
         }
 
         .forgot-pass a {
@@ -121,36 +187,91 @@
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        .forgot-pass a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: #5f6f46;
+            transition: width 0.3s;
+        }
+
+        .forgot-pass a:hover {
+            color: #5f6f46;
+        }
+
+        .forgot-pass a:hover::after {
+            width: 100%;
         }
 
         .login-btn {
             width: 100%;
             max-width: 400px;
-            padding: 15px;
-            background-color: #5f6f46;
+            padding: 16px;
+            background: linear-gradient(135deg, #5f6f46 0%, #7a8f5a 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(95, 111, 70, 0.2);
+            animation: slideInLeft 0.6s ease-out 0.6s both;
+            position: relative;
+            overflow: hidden;
         }
 
         .login-btn:hover {
-            background-color: #4b5836;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(95, 111, 70, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(95, 111, 70, 0.2);
+        }
+
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+        }
+
+        .login-btn:hover::after {
+            animation: shimmer 1.5s infinite;
         }
 
         .footer-text {
             margin-top: 50px;
             font-size: 0.85rem;
             color: #777;
+            animation: slideInLeft 0.6s ease-out 0.7s both;
         }
 
         .footer-text a {
             color: #5f6f46;
             text-decoration: none;
             font-weight: 700;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .footer-text a:hover {
+            color: #4b5836;
+            text-decoration: underline;
         }
 
         /* --- القسم الأيمن (الصورة) --- */
@@ -165,15 +286,18 @@
             justify-content: center;
             align-items: center;
             color: white;
+            animation: slideInRight 0.8s ease-out;
         }
 
-        .overlay {
+        .image-section::before {
+            content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            right: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
+            z-index: 1;
         }
 
         .image-content {
@@ -181,6 +305,7 @@
             z-index: 2;
             text-align: center;
             padding: 20px;
+            animation: fadeIn 1s ease-out 0.3s both;
         }
 
         .image-content h2 {
@@ -188,6 +313,8 @@
             font-weight: 700;
             margin-bottom: 5px;
             line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            animation: float 6s ease-in-out infinite;
         }
 
         .image-content .brand-name {
@@ -197,6 +324,7 @@
             margin-bottom: 20px;
             display: block;
             opacity: 0.9;
+            animation: fadeIn 1s ease-out 0.5s both;
         }
 
         .image-content p {
@@ -205,6 +333,7 @@
             max-width: 80%;
             margin: 0 auto;
             line-height: 1.6;
+            animation: fadeIn 1s ease-out 0.7s both;
         }
 
         /* --- أنماط إعادة تعيين كلمة المرور --- */
@@ -212,6 +341,7 @@
             display: none;
             width: 100%;
             max-width: 400px;
+            animation: scaleIn 0.5s ease-out;
         }
 
         .step-indicator {
@@ -219,6 +349,7 @@
             justify-content: space-between;
             margin-bottom: 30px;
             position: relative;
+            animation: slideInLeft 0.6s ease-out both;
         }
 
         .step-indicator::before {
@@ -230,6 +361,7 @@
             height: 2px;
             background-color: #eee;
             z-index: 1;
+            transition: all 0.5s;
         }
 
         .step-item {
@@ -238,6 +370,7 @@
             align-items: center;
             position: relative;
             z-index: 2;
+            transition: all 0.3s;
         }
 
         .step-number {
@@ -251,25 +384,33 @@
             justify-content: center;
             font-weight: 600;
             margin-bottom: 5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
         }
 
         .step-item.active .step-number {
             background-color: #5f6f46;
             color: #fff;
+            border-color: #5f6f46;
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(95, 111, 70, 0.3);
         }
 
         .step-label {
             font-size: 12px;
             color: #666;
+            transition: all 0.3s;
         }
 
         .step-item.active .step-label {
             color: #5f6f46;
             font-weight: 600;
+            transform: translateY(2px);
         }
 
         .step {
             display: none;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .step.active {
@@ -278,37 +419,49 @@
 
         .next-btn, .reset-btn {
             width: 100%;
-            padding: 15px;
-            background-color: #5f6f46;
+            padding: 16px;
+            background: linear-gradient(135deg, #5f6f46 0%, #7a8f5a 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(95, 111, 70, 0.2);
         }
 
         .next-btn:hover, .reset-btn:hover {
-            background-color: #4b5836;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(95, 111, 70, 0.3);
+        }
+
+        .next-btn:active, .reset-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(95, 111, 70, 0.2);
         }
 
         .back-btn {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background-color: #f5f5f5;
             color: #666;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            border: 1px solid transparent;
         }
 
         .back-btn:hover {
             background-color: #e9e9e9;
+            border-color: #ddd;
+            transform: translateY(-2px);
         }
 
         /* --- أنماط لوحة التحكم --- */
@@ -316,6 +469,7 @@
             display: none;
             min-height: 100vh;
             width: 100%;
+            animation: fadeIn 0.8s ease-out;
         }
 
         .sidebar {
@@ -330,6 +484,7 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            animation: slideInRight 0.5s ease-out;
         }
 
         .logo {
@@ -337,6 +492,7 @@
             padding: 20px 15px;
             border-bottom: 1px solid #eee;
             margin-bottom: 20px;
+            animation: fadeIn 0.6s ease-out 0.2s both;
         }
 
         .logo h1 {
@@ -358,7 +514,14 @@
 
         .menu li {
             margin-bottom: 5px;
+            animation: fadeIn 0.6s ease-out both;
         }
+
+        .menu li:nth-child(1) { animation-delay: 0.1s; }
+        .menu li:nth-child(2) { animation-delay: 0.2s; }
+        .menu li:nth-child(3) { animation-delay: 0.3s; }
+        .menu li:nth-child(4) { animation-delay: 0.4s; }
+        .menu li:nth-child(5) { animation-delay: 0.5s; }
 
         .menu a {
             display: flex;
@@ -367,7 +530,9 @@
             color: #333;
             text-decoration: none;
             border-radius: 8px;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
         .menu a i {
@@ -375,17 +540,47 @@
             font-size: 18px;
             width: 24px;
             text-align: center;
+            transition: all 0.3s;
+        }
+
+        .menu a span {
+            transition: all 0.3s;
         }
 
         .menu a:hover, .menu a.active {
             background-color: rgba(95, 111, 70, 0.1);
             color: #5f6f46;
+            transform: translateX(-5px);
+        }
+
+        .menu a:hover i, .menu a.active i {
+            transform: scale(1.1);
+            color: #5f6f46;
+        }
+
+        .menu a::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: #5f6f46;
+            transform: translateX(10px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .menu a.active::after {
+            transform: translateX(0);
+            opacity: 1;
         }
 
         .footer-menu {
             padding: 0 15px;
             border-top: 1px solid #eee;
             padding-top: 20px;
+            animation: fadeIn 0.6s ease-out 0.6s both;
         }
 
         .logout-btn {
@@ -409,15 +604,22 @@
             font-size: 18px;
             width: 24px;
             text-align: center;
+            transition: all 0.3s;
         }
 
         .logout-btn:hover {
             background-color: rgba(231, 76, 60, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .logout-btn:hover i {
+            transform: scale(1.1);
         }
 
         .main-content {
             margin-right: 250px;
             padding: 20px;
+            animation: fadeIn 0.8s ease-out 0.3s both;
         }
 
         .header {
@@ -427,6 +629,7 @@
             margin-bottom: 30px;
             padding-bottom: 15px;
             border-bottom: 1px solid #eee;
+            animation: slideInLeft 0.6s ease-out both;
         }
 
         .header h1 {
@@ -442,6 +645,32 @@
         .user-info {
             display: flex;
             align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(95, 111, 70, 0.05);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .user-info:hover {
+            background: rgba(95, 111, 70, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .user-info i {
+            background-color: #5f6f46;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .user-info:hover i {
+            transform: scale(1.1);
         }
 
         /* --- البطاقات الإحصائية المحدثة --- */
@@ -450,6 +679,7 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out 0.4s both;
         }
 
         .card {
@@ -460,6 +690,13 @@
             position: relative;
             overflow: hidden;
             border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
         .card::before {
@@ -472,6 +709,11 @@
             background: rgba(95, 111, 70, 0.05);
             border-radius: 50%;
             z-index: 0;
+            transition: all 0.5s;
+        }
+
+        .card:hover::before {
+            transform: scale(1.2);
         }
 
         .card::after {
@@ -484,6 +726,11 @@
             background: rgba(95, 111, 70, 0.05);
             border-radius: 50%;
             z-index: 0;
+            transition: all 0.5s;
+        }
+
+        .card:hover::after {
+            transform: scale(1.2);
         }
 
         .card h3 {
@@ -493,6 +740,11 @@
             font-weight: 600;
             position: relative;
             z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .card:hover h3 {
+            color: #5f6f46;
         }
 
         .card .number {
@@ -502,6 +754,11 @@
             margin-bottom: 5px;
             position: relative;
             z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .card:hover .number {
+            transform: scale(1.05);
         }
 
         /* --- أزرار الإضافة المحدثة --- */
@@ -510,6 +767,7 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out 0.5s both;
         }
 
         .action-card {
@@ -523,10 +781,20 @@
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
-            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
             position: relative;
             overflow: hidden;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            border-color: rgba(95, 111, 70, 0.2);
+        }
+
+        .action-card:active {
+            transform: translateY(-2px) scale(1);
         }
 
         .action-card::before {
@@ -539,6 +807,11 @@
             background: rgba(95, 111, 70, 0.05);
             border-radius: 50%;
             z-index: 0;
+            transition: all 0.5s;
+        }
+
+        .action-card:hover::before {
+            transform: scale(1.5);
         }
 
         .action-card::after {
@@ -551,17 +824,17 @@
             background: rgba(95, 111, 70, 0.05);
             border-radius: 50%;
             z-index: 0;
+            transition: all 0.5s;
         }
 
-        .action-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        .action-card:hover::after {
+            transform: scale(1.5);
         }
 
         .action-icon {
             width: 70px;
             height: 70px;
-            background: #5f6f46;
+            background: linear-gradient(135deg, #5f6f46 0%, #7a8f5a 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -569,11 +842,23 @@
             margin-bottom: 15px;
             position: relative;
             z-index: 1;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(95, 111, 70, 0.2);
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(95, 111, 70, 0.3);
         }
 
         .action-icon i {
             color: white;
             font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover .action-icon i {
+            transform: scale(1.1);
         }
 
         .action-text {
@@ -582,42 +867,64 @@
             color: #5f6f46;
             position: relative;
             z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover .action-text {
+            transform: translateY(-2px);
         }
 
         .btn {
             padding: 12px 25px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn i {
             margin-left: 8px;
+            transition: all 0.3s;
         }
 
         .btn-primary {
-            background: linear-gradient(to right, #5f6f46, #7a8f5a);
+            background: linear-gradient(135deg, #5f6f46 0%, #7a8f5a 100%);
             color: #fff;
-            box-shadow: 0 4px 10px rgba(95, 111, 70, 0.2);
+            box-shadow: 0 4px 15px rgba(95, 111, 70, 0.2);
         }
 
         .btn-primary:hover {
-            background: linear-gradient(to right, #4b5836, #5f6f46);
-            box-shadow: 0 6px 12px rgba(95, 111, 70, 0.3);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(95, 111, 70, 0.3);
+        }
+
+        .btn-primary:hover i {
+            transform: translateX(-3px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(95, 111, 70, 0.2);
         }
 
         .table-container {
             background: #fff;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             overflow: hidden;
+            animation: fadeIn 0.6s ease-out 0.6s both;
+            transition: all 0.3s;
+        }
+
+        .table-container:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
         }
 
         .table-header {
@@ -626,6 +933,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(95, 111, 70, 0.02);
         }
 
         .table-header h3 {
@@ -642,16 +950,46 @@
             padding: 15px 20px;
             text-align: right;
             border-bottom: 1px solid #eee;
+            transition: all 0.3s;
         }
 
         th {
             background-color: rgba(95, 111, 70, 0.05);
             color: #5f6f46;
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: #5f6f46;
+            transition: width 0.3s;
+        }
+
+        tr:hover th::after {
+            width: 100%;
+        }
+
+        tr:hover td {
+            background-color: rgba(95, 111, 70, 0.02);
         }
 
         tr:last-child td {
             border-bottom: none;
+        }
+
+        tr {
+            transition: all 0.3s;
+        }
+
+        tr:hover {
+            transform: translateX(-5px);
         }
 
         .empty-table {
@@ -666,21 +1004,31 @@
         }
 
         .action-btn {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .delete-btn {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
         }
 
         .delete-btn:hover {
-            background: #c0392b;
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
         }
 
         .modal {
@@ -694,16 +1042,19 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .modal-content {
             background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             width: 90%;
             max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
+            animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
         }
 
         .modal-header {
@@ -712,19 +1063,33 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: linear-gradient(135deg, #5f6f46 0%, #7a8f5a 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
         }
 
         .modal-header h2 {
-            color: #5f6f46;
             font-size: 22px;
         }
 
         .close-modal {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
-            color: #666;
+            color: white;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
         }
 
         .modal-body {
@@ -735,21 +1100,33 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
+            animation: fadeIn 0.5s ease-out 0.2s both;
         }
+
+        .form-group {
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
 
         .form-actions {
             display: flex;
             gap: 10px;
             margin-top: 25px;
+            animation: fadeIn 0.5s ease-out 0.3s both;
         }
 
         .btn-cancel {
             background: #f5f5f5;
             color: #333;
+            border: 1px solid #eee;
         }
 
         .btn-cancel:hover {
             background: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .success-modal {
@@ -761,55 +1138,57 @@
             font-size: 60px;
             color: #5f6f46;
             margin-bottom: 20px;
+            animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
         }
 
         .success-modal h2 {
             color: #5f6f46;
             margin-bottom: 15px;
             font-size: 26px;
+            animation: fadeIn 0.5s ease-out 0.5s both;
         }
 
         .success-modal p {
             color: #666;
             margin-bottom: 25px;
+            animation: fadeIn 0.5s ease-out 0.7s both;
         }
 
         .notification {
             position: fixed;
             top: 20px;
-            left: 20px;
-            right: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
             max-width: 400px;
             margin: 0 auto;
             padding: 15px 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             color: white;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             z-index: 1100;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transform: translateY(-100px);
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .notification.show {
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
 
         .notification.success {
-            background-color: #27ae60;
+            background: linear-gradient(135deg, #27ae60 0%, #219653 100%);
         }
 
         .notification.error {
-            background-color: #e74c3c;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         }
 
         .notification.warning {
-            background-color: #e67e22;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
         }
 
         .notification .close-notification {
@@ -818,6 +1197,12 @@
             color: white;
             font-size: 18px;
             cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .notification .close-notification:hover {
+            transform: scale(1.1);
         }
 
         .loading {
@@ -837,10 +1222,16 @@
 
         .content-section {
             display: none;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .content-section.active {
             display: block;
+        }
+
+        /* تأثيرات دخول العناصر */
+        .element-animation {
+            animation: fadeIn 0.6s ease-out both;
         }
 
         /* التجاوب مع الجوال */
@@ -849,10 +1240,11 @@
                 flex-direction: column-reverse;
                 height: auto;
                 width: 95%;
+                margin: 20px 0;
             }
             
             .image-section {
-                height: 300px;
+                height: 250px;
             }
 
             .form-section {
@@ -860,11 +1252,12 @@
             }
             
             .image-content h2 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
             
             .image-content p {
-                font-size: 1rem;
+                font-size: 0.9rem;
+                max-width: 90%;
             }
 
             .sidebar {
@@ -916,6 +1309,56 @@
                 display: block;
                 overflow-x: auto;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+
+            .notification {
+                width: 90%;
+                left: 5%;
+                transform: translateX(0) translateY(-100px);
+            }
+            
+            .notification.show {
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5f6f46;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5836;
+        }
+
+        /* تأثيرات خاصة */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -923,7 +1366,6 @@
     <!-- صفحة تسجيل الدخول -->
     <div class="main-container" id="loginPage">
         <div class="image-section">
-            <div class="overlay"></div>
             <div class="image-content">
                 <h2>المنصة الذكية</h2>
                 <span class="brand-name">SmartWallet</span>
@@ -1548,6 +1990,32 @@
     <div id="notificationArea"></div>
 
     <script>
+        // إضافة تأثير ريبلك للنقر
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement("span");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+            
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+            circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+            circle.classList.add("ripple");
+            
+            const ripple = button.getElementsByClassName("ripple")[0];
+            if (ripple) {
+                ripple.remove();
+            }
+            
+            button.appendChild(circle);
+        }
+        
+        // إضافة تأثيرات ريبلك للأزرار
+        const buttons = document.querySelectorAll('.login-btn, .next-btn, .reset-btn, .btn-primary, .action-btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', createRipple);
+        });
+        
         // بيانات التطبيق
         const appData = {
             students: [],
@@ -1608,7 +2076,7 @@
             let tableHTML = '';
             appData.students.forEach((student) => {
                 tableHTML += `
-                    <tr>
+                    <tr class="element-animation">
                         <td>${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}</td>
                         <td>${student.educationLevel}</td>
                         <td>${student.guardian.firstName} ${student.guardian.secondName} ${student.guardian.lastName}</td>
@@ -1633,7 +2101,7 @@
             let tableHTML = '';
             appData.students.forEach((student, index) => {
                 tableHTML += `
-                    <tr>
+                    <tr class="element-animation" style="animation-delay: ${index * 0.05}s">
                         <td>${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}</td>
                         <td>${student.educationLevel}</td>
                         <td>${student.class}</td>
@@ -1686,7 +2154,7 @@
                     .reduce((total, student) => total + student.balance, 0);
                 
                 tableHTML += `
-                    <tr>
+                    <tr class="element-animation" style="animation-delay: ${index * 0.05}s">
                         <td>${guardian.firstName} ${guardian.secondName} ${guardian.lastName}</td>
                         <td>${totalBalance} ريال</td>
                         <td>${guardian.phone}</td>
@@ -1734,7 +2202,7 @@
                 const genderText = cashier.gender === 'ذكر' ? 'بني' : 'بنات';
                 
                 tableHTML += `
-                    <tr>
+                    <tr class="element-animation" style="animation-delay: ${index * 0.05}s">
                         <td>${cashier.firstName} ${cashier.secondName} ${cashier.lastName}</td>
                         <td>${cashier.phone}</td>
                         <td>${cashier.educationLevel}</td>
@@ -1780,7 +2248,7 @@
             let tableHTML = '';
             appData.users.forEach((user, index) => {
                 tableHTML += `
-                    <tr>
+                    <tr class="element-animation" style="animation-delay: ${index * 0.05}s">
                         <td>${user.firstName} ${user.secondName} ${user.lastName}</td>
                         <td>${user.position}</td>
                         <td>${user.phone}</td>
@@ -1823,6 +2291,7 @@
                 const text = row.textContent.toLowerCase();
                 if (text.includes(searchTerm.toLowerCase())) {
                     row.style.display = '';
+                    row.style.animation = 'fadeIn 0.3s ease-out';
                 } else {
                     row.style.display = 'none';
                 }
@@ -1838,6 +2307,7 @@
                 const text = row.textContent.toLowerCase();
                 if (text.includes(searchTerm.toLowerCase())) {
                     row.style.display = '';
+                    row.style.animation = 'fadeIn 0.3s ease-out';
                 } else {
                     row.style.display = 'none';
                 }
@@ -1853,6 +2323,7 @@
                 const text = row.textContent.toLowerCase();
                 if (text.includes(searchTerm.toLowerCase())) {
                     row.style.display = '';
+                    row.style.animation = 'fadeIn 0.3s ease-out';
                 } else {
                     row.style.display = 'none';
                 }
@@ -1868,6 +2339,7 @@
                 const text = row.textContent.toLowerCase();
                 if (text.includes(searchTerm.toLowerCase())) {
                     row.style.display = '';
+                    row.style.animation = 'fadeIn 0.3s ease-out';
                 } else {
                     row.style.display = 'none';
                 }
@@ -1877,12 +2349,18 @@
         // حذف طالب
         function deleteStudent(index) {
             if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
-                appData.students.splice(index, 1);
-                updateStats();
-                updateStudentsTable();
-                updateStudentsManagementTable();
-                updateGuardiansTable();
-                showNotification('تم حذف الطالب بنجاح', 'success');
+                const row = document.querySelector(`tr[data-index="${index}"]`);
+                if (row) {
+                    row.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        appData.students.splice(index, 1);
+                        updateStats();
+                        updateStudentsTable();
+                        updateStudentsManagementTable();
+                        updateGuardiansTable();
+                        showNotification('تم حذف الطالب بنجاح', 'success');
+                    }, 300);
+                }
             }
         }
         
@@ -1898,29 +2376,47 @@
             }
             
             if (confirm('هل أنت متأكد من حذف ولي الأمر هذا؟')) {
-                appData.guardians.splice(index, 1);
-                updateStats();
-                updateGuardiansTable();
-                showNotification('تم حذف ولي الأمر بنجاح', 'success');
+                const row = document.querySelector(`#guardiansTable tr[data-index="${index}"]`);
+                if (row) {
+                    row.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        appData.guardians.splice(index, 1);
+                        updateStats();
+                        updateGuardiansTable();
+                        showNotification('تم حذف ولي الأمر بنجاح', 'success');
+                    }, 300);
+                }
             }
         }
         
         // حذف كاشير
         function deleteCashier(index) {
             if (confirm('هل أنت متأكد من حذف هذا الكاشير؟')) {
-                appData.cashiers.splice(index, 1);
-                updateStats();
-                updateCashiersTable();
-                showNotification('تم حذف الكاشير بنجاح', 'success');
+                const row = document.querySelector(`#cashiersTable tr[data-index="${index}"]`);
+                if (row) {
+                    row.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        appData.cashiers.splice(index, 1);
+                        updateStats();
+                        updateCashiersTable();
+                        showNotification('تم حذف الكاشير بنجاح', 'success');
+                    }, 300);
+                }
             }
         }
         
         // حذف مستخدم
         function deleteUser(index) {
             if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
-                appData.users.splice(index, 1);
-                updateUsersTable();
-                showNotification('تم حذف المستخدم بنجاح', 'success');
+                const row = document.querySelector(`#usersTable tr[data-index="${index}"]`);
+                if (row) {
+                    row.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        appData.users.splice(index, 1);
+                        updateUsersTable();
+                        showNotification('تم حذف المستخدم بنجاح', 'success');
+                    }, 300);
+                }
             }
         }
         
@@ -2043,7 +2539,8 @@
             });
             
             // إظهار القسم المطلوب
-            document.getElementById(sectionId).classList.add('active');
+            const newSection = document.getElementById(sectionId);
+            newSection.classList.add('active');
             
             // تحديث القائمة الجانبية
             document.querySelectorAll('.menu-link').forEach(link => {
@@ -2051,6 +2548,9 @@
             });
             
             document.querySelector(`.menu-link[data-section="${sectionId.split('-')[0]}"]`).classList.add('active');
+            
+            // تحريك شريط التمرير للأعلى
+            document.querySelector('.main-content').scrollTop = 0;
         }
         
         // إظهار إشعار
@@ -2100,6 +2600,16 @@
         // إعداد التطبيق
         function init() {
             checkLoginStatus();
+            
+            // إضافة تأثير fadeOut للرسوم المتحركة
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateX(0); }
+                    to { opacity: 0; transform: translateX(20px); }
+                }
+            `;
+            document.head.appendChild(style);
             
             // إعداد أحداث تسجيل الدخول
             document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -2400,6 +2910,15 @@
                     });
                 });
             });
+            
+            // إضافة تأثيرات للمودال عند النقر خارجها
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
         }
         
         // تشغيل التطبيق
@@ -2407,4 +2926,3 @@
     </script>
 </body>
 </html>
-
